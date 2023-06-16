@@ -10,6 +10,10 @@ variable "confluent_cloud_env_id" {
   type = string
 }
 
+variable "confluent_cloud_schema_registry_id" {
+  type = string
+}
+
 variable "aws_cc_cluster_name" {
   type = string
   default = "aws-cc-cluster"
@@ -22,10 +26,6 @@ variable "aws_cc_cluster_region" {
 variable "aws_cc_kafka_api_name" {
   type = string
   default = "dedicated-kafka-api-key"
-}
-
-variable "confluent_cloud_schema_registry_id" {
-  type = string
 }
 
 variable "aws_cc_ksql_cluster_name" {

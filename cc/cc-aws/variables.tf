@@ -41,3 +41,11 @@ variable "aws_cc_topics" {
     "NewOffersPerActivityType"
   ]
 }
+
+variable "aws_landing_api_key" {
+  type = string
+}
+
+variable "aws_landing_api_secret" {
+  type = string
+}

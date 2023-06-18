@@ -1,0 +1,46 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: ClusterLink
+metadata:
+  name: aws-cc-cp-cluster-link
+  namespace: confluent
+spec:
+  destinationKafkaCluster:
+    kafkaRestClassRef:
+      name: krc-cfk
+      namespace: confluent
+  sourceKafkaCluster:
+    tls:
+      enabled: true
+      secretRef: ccloud-tls-certs
+    bootstrapEndpoint: pkc-jn77q.us-west-2.aws.confluent.cloud:9092 
+    clusterID: lkc-7pnqdp
+    authentication:
+      type: plain
+      jaasConfigPassThrough:
+        secretRef: jaasconfig-ccloud
+  mirrorTopics:
+  - name: aws-next-best-offers-per-customer-activity-event
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ClusterLink
+metadata:
+  name: cp-aws-cc-cluster-link
+  namespace: confluent
+  annotations:
+    platform.confluent.io/http-timeout-in-seconds: "1000"
+spec:
+  destinationKafkaCluster:
+    kafkaRestClassRef:
+      name: krc-cloud
+      namespace: confluent
+  sourceKafkaCluster:
+    authentication:
+      type: plain
+      jaasConfig:
+        secretRef: credential
+    bootstrapEndpoint: cp-hsbc-ops.hsbc-ops.selabs.net:9092
+    kafkaRestClassRef:
+      name: krc-cfk
+      namespace: confluent
+  mirrorTopics:
+    - name: cp-enriched-customer-behaviour

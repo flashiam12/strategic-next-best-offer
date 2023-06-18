@@ -53,7 +53,7 @@ resource "confluent_api_key" "shiv-dedicated-public-kafka-api-key" {
 
 
 resource "confluent_role_binding" "default-sa-rb-dedicated-public" {
-  principal   = "User:${confluent_service_account.dev-admin-sa.id}"
+  principal   = "User:${confluent_service_account.default.id}"
   role_name   = "CloudClusterAdmin"
   crn_pattern = confluent_kafka_cluster.dedicated.rbac_crn
 }

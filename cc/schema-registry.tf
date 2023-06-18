@@ -2,7 +2,7 @@ resource "confluent_schema_registry_cluster" "essentials" {
   package = "ESSENTIALS"
 
   environment {
-    id = data.confluent_environment.default.id
+    id = confluent_environment.default.id
   }
 
   region {

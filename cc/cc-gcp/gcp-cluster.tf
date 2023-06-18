@@ -23,7 +23,7 @@ resource "confluent_kafka_cluster" "dedicated" {
 ### CREATING API KEY TO MANAGE CLUSTER FROM ADMIN SA AS PRINCIPAL ###
 
 resource "confluent_api_key" "shiv-dedicated-public-kafka-api-key" {
-  display_name = var.aws_cc_kafka_api_name
+  display_name = var.gcp_cc_kafka_api_name
   description  = "Kafka API Key owned by default admin service account"
   
   owner {
@@ -53,7 +53,7 @@ resource "confluent_api_key" "shiv-dedicated-public-kafka-api-key" {
 
 
 resource "confluent_role_binding" "default-sa-rb-dedicated-public" {
-  principal   = "User:${confluent_service_account.dev-admin-sa.id}"
+  principal   = "User:${confluent_service_account.default.id}"
   role_name   = "CloudClusterAdmin"
   crn_pattern = confluent_kafka_cluster.dedicated.rbac_crn
 }

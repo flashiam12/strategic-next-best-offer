@@ -1,4 +1,5 @@
 resource "confluent_connector" "KinesisSource" {
+  count = var.aws_create_cc_connectors == true ? 1 : 0
   environment {
     id = data.confluent_environment.default.id
   }
@@ -26,6 +27,7 @@ resource "confluent_connector" "KinesisSource" {
 }
 
 resource "confluent_connector" "S3Sink" {
+  count = var.aws_create_cc_connectors == true ? 1 : 0
   environment {
     id = data.confluent_environment.default.id
   }

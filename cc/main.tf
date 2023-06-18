@@ -1,0 +1,91 @@
+module "aws-cc" {
+  source = "./cc-aws"
+  confluent_cloud_api_key  = var.confluent_api_key
+  confluent_cloud_api_secret = var.confluent_api_secret
+  confluent_cloud_env_id = confluent_environment.default.id
+  confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
+  aws_cc_cluster_region = var.aws_cc_cluster_region
+  aws_landing_api_key = var.aws_api_key
+  aws_landing_api_secret = var.aws_api_secret
+}
+
+data "confluent_kafka_cluster" "aws-cc-cluster" {
+  id = module.aws-cc.aws_cc_cluster
+  environment {
+    id = confluent_environment.default.id
+  }
+}
+
+module "gcp-cc" {
+  source = "./cc-gcp"
+  confluent_cloud_api_key  = var.confluent_api_key
+  confluent_cloud_api_secret = var.confluent_api_secret
+  confluent_cloud_env_id = confluent_environment.default.id
+  confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
+  gcp_cc_cluster_region = var.gcp_cc_cluster_region
+  # gcp_landing_service_account = var.gcp_service_account
+}
+
+data "confluent_kafka_cluster" "gcp-cc-cluster" {
+  id = module.gcp-cc.gcp_cc_cluster
+  environment {
+    id = confluent_environment.default.id
+  }
+}
+
+locals {
+  aws_cc_api_key = module.aws-cc.aws_cc_admin_api_key
+  aws_cc_api_secret = module.aws-cc.aws_cc_admin_api_secret
+  gcp_cc_api_key = module.gcp-cc.gcp_cc_admin_api_key
+  gcp_cc_api_secret = module.gcp-cc.gcp_cc_admin_api_secret
+}
+
+resource "confluent_cluster_link" "aws-gcp-cc-link" {
+  link_name = "aws_to_gcp_cc_cluster_link"
+  source_kafka_cluster {
+    id                 = data.confluent_kafka_cluster.aws-cc-cluster.id
+    bootstrap_endpoint = data.confluent_kafka_cluster.aws-cc-cluster.bootstrap_endpoint
+    credentials {
+      key    = local.aws_cc_api_key
+      secret = local.aws_cc_api_secret
+    }
+  }
+
+  destination_kafka_cluster {
+    id            = data.confluent_kafka_cluster.gcp-cc-cluster.id 
+    rest_endpoint = data.confluent_kafka_cluster.gcp-cc-cluster.rest_endpoint
+    credentials {
+      key    = local.gcp_cc_api_key
+      secret = local.gcp_cc_api_secret
+    }
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+resource "confluent_cluster_link" "gcp-aws-cc-link" {
+  link_name = "gcp_to_aws_cc_cluster_link"
+  source_kafka_cluster {
+    id                 = data.confluent_kafka_cluster.gcp-cc-cluster.id 
+    bootstrap_endpoint = data.confluent_kafka_cluster.gcp-cc-cluster.bootstrap_endpoint
+    credentials {
+      key    = local.gcp_cc_api_key
+      secret = local.gcp_cc_api_secret
+    }
+  }
+
+  destination_kafka_cluster {
+    id            = data.confluent_kafka_cluster.aws-cc-cluster.id
+    rest_endpoint = data.confluent_kafka_cluster.aws-cc-cluster.rest_endpoint
+    credentials {
+      key    = local.aws_cc_api_key
+      secret = local.aws_cc_api_secret
+    }
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}

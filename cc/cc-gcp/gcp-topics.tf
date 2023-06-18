@@ -1,5 +1,5 @@
 locals {
-  topic_names = var.aws_cc_topics
+  topic_names = var.gcp_cc_topics
 }
 
 resource "confluent_kafka_topic" "gcp-cc-topics" {
@@ -15,7 +15,7 @@ resource "confluent_kafka_topic" "gcp-cc-topics" {
   }
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
   depends_on = [ 
     confluent_kafka_acl.create-on-prefix-topics, 
@@ -23,4 +23,8 @@ resource "confluent_kafka_topic" "gcp-cc-topics" {
     confluent_kafka_acl.write-on-prefix-topics, 
     confluent_kafka_acl.read-on-prefix-topics 
   ]
+}
+
+locals {
+  topic_ids = [ for topic in confluent_kafka_topic.gcp-cc-topics : topic.id ]
 }

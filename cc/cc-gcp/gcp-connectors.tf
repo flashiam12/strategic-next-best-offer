@@ -1,4 +1,5 @@
 resource "confluent_connector" "PubSubSource" {
+  count = var.gcp_create_cc_connectors == true ? 1 : 0
   environment {
     id = data.confluent_environment.default.id
   }
@@ -26,6 +27,7 @@ resource "confluent_connector" "PubSubSource" {
 }
 
 resource "confluent_connector" "BigQuerySink" {
+  count = var.gcp_create_cc_connectors == true ? 1 : 0
   environment {
     id = data.confluent_environment.default.id
   }

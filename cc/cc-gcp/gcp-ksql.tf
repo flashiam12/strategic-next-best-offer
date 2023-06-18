@@ -1,5 +1,5 @@
 resource "confluent_role_binding" "default-sa-rb-schema-registry-resource-owner" {
-  principal   = "User:${confluent_service_account.app-ksql.id}"
+  principal   = "User:${confluent_service_account.default.id}"
   role_name   = "ResourceOwner"
   crn_pattern = format("%s/%s", data.confluent_schema_registry_cluster.default.resource_name, "subject=*")
 

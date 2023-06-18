@@ -1,4 +1,4 @@
-variable "confluent_cloud_api_key " {
+variable "confluent_cloud_api_key" {
   type = string
 }
 
@@ -36,11 +36,15 @@ variable "gcp_cc_ksql_cluster_name" {
 variable "gcp_cc_topics" {
   type = list(string)
   default = [
-    "EnrichedCustomersBehavior",
-    "NewOffersPerActivityType"
+    "gcp-new-offers-per-activity-type"
   ]
 }
 
-variable "gcp_landing_service_account" {
-  type = string
+variable "gcp_create_cc_connectors" {
+  type = bool
+  default = false
 }
+
+# variable "gcp_landing_service_account" {
+#   type = string
+# }

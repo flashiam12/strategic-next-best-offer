@@ -1,4 +1,4 @@
-variable "confluent_cloud_api_key " {
+variable "confluent_cloud_api_key" {
   type = string
 }
 
@@ -36,9 +36,7 @@ variable "aws_cc_ksql_cluster_name" {
 variable "aws_cc_topics" {
   type = list(string)
   default = [
-    "EnrichedCustomersBehavior",
-    "NextBestOffersPerCustomerActivityEvent",
-    "NewOffersPerActivityType"
+    "aws-next-best-offers-per-customer-activity-event"
   ]
 }
 
@@ -49,3 +47,10 @@ variable "aws_landing_api_key" {
 variable "aws_landing_api_secret" {
   type = string
 }
+
+variable "aws_create_cc_connectors" {
+  type = bool
+  default = false
+}
+
+

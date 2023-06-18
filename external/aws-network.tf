@@ -1,5 +1,5 @@
 locals {
-    eks_cidr = "172.20.0.0/22"
+    eks_cidr = "10.10.0.0/22"
     eks_vpc_partition = cidrsubnets(local.eks_cidr, 2, 2)
     eks_vpc_public_partition = cidrsubnets(local.eks_vpc_partition[0], 2, 2)
     eks_vpc = {
@@ -10,9 +10,9 @@ locals {
     }
 }
 
-module "ops-vpc" {
+module "db-ops-vpc" {
   source            = "terraform-aws-modules/vpc/aws"
-  name              = "eks-ops-vpc"
+  name              = "db-ops-vpc"
   azs               = local.eks_vpc.azs
   cidr              = local.eks_cidr
   private_subnets   = local.eks_vpc.private_subnets
@@ -22,25 +22,10 @@ module "ops-vpc" {
   single_nat_gateway = true
   one_nat_gateway_per_az = false
   flow_log_file_format = "plain-text"
-  public_subnet_tags = {
-   "kubernetes.io/cluster/${local.eks_cluster_name}" = "owned"
-   "kubernetes.io/role/elb" = 1
-   "kubernetes.io/role/internal-elb" = 1
-  }
-  # database_subnet_tags = {
-  #   Role = "database"
-  # }
-  # database_subnet_group_name = "ops-vpc-db"
-  # private_subnet_tags = {
-  #   # "kubernetes.io/cluster/${local.eks_cluster_name}" = "owned"
-  # #  "kubernetes.io/role/elb" = 1
-  #  "kubernetes.io/role/internal-elb" = "1"
-  # }
   tags = {
     Terraform = "true"
     Environment = "ops"
-    Purpose = "hsbc"
+    Purpose = "hsbc-db"
     Kind = "strategic"
-    # "kubernetes.io/cluster/${local.eks_cluster_name}" = "owned"
   }
 }

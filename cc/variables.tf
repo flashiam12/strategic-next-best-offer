@@ -15,21 +15,10 @@ variable "aws_cc_cluster_region" {
   type = string
 }
 
-variable "aws_api_key" {
-  type = string
-}
-
-variable "aws_api_secret" {
-  type = string
-}
-
 variable "gcp_cc_cluster_region" {
   type = string
 }
 
-# variable "gcp_service_account" {
-#   type = string
-# }
 
 
 

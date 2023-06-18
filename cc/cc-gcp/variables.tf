@@ -44,7 +44,3 @@ variable "gcp_create_cc_connectors" {
   type = bool
   default = false
 }
-
-# variable "gcp_landing_service_account" {
-#   type = string
-# }

@@ -40,14 +40,6 @@ variable "aws_cc_topics" {
   ]
 }
 
-variable "aws_landing_api_key" {
-  type = string
-}
-
-variable "aws_landing_api_secret" {
-  type = string
-}
-
 variable "aws_create_cc_connectors" {
   type = bool
   default = false

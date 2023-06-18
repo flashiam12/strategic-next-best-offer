@@ -5,8 +5,6 @@ module "aws-cc" {
   confluent_cloud_env_id = confluent_environment.default.id
   confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
   aws_cc_cluster_region = var.aws_cc_cluster_region
-  aws_landing_api_key = var.aws_api_key
-  aws_landing_api_secret = var.aws_api_secret
 }
 
 data "confluent_kafka_cluster" "aws-cc-cluster" {
@@ -23,7 +21,6 @@ module "gcp-cc" {
   confluent_cloud_env_id = confluent_environment.default.id
   confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
   gcp_cc_cluster_region = var.gcp_cc_cluster_region
-  # gcp_landing_service_account = var.gcp_service_account
 }
 
 data "confluent_kafka_cluster" "gcp-cc-cluster" {

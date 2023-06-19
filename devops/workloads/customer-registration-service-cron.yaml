@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: customer-registration-service-cron
-  namespace: tibco
+  namespace: internal
 spec:
   schedule: "* * * * *"
   concurrencyPolicy: Allow

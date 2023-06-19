@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: customer-registration-service-cron
+  namespace: tibco
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Allow
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: customer-registration
+            envFrom:
+            - configMapRef:
+                name: customer-registration-service-cron-config
+            image: 829250931565.dkr.ecr.us-west-2.amazonaws.com/hsbc-ops-docker-registry:latest
+            imagePullPolicy: IfNotPresent
+            command:
+            - python3
+            - customer-registration-service.py
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: ops
+    tier: internal
+  name: customer-registration-service-cron-config
+  namespace: internal
+data:
+  TIBCO_EMS_SERVER: ems-service.tibco.svc.cluster.local
+  TIBCO_MESSAGE: '{"name":"shiv","city":"bangalore","country":"India"}'
+  TIBCO_PUBLISH_COUNT: "100"
+  TIBCO_QUEUE: test_tibco_connector
+  TIBCO_USER: admin

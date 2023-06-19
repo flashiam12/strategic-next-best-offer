@@ -16,4 +16,7 @@ output "aws_rds_db_address" {
 output "aws_rds_db_port" {
   value = module.db.db_instance_port
 }
+output "aws_db_vpc_id" {
+  value = module.db-ops-vpc.vpc_id
+}
 

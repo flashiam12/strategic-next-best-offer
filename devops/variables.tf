@@ -13,3 +13,7 @@ variable "aws_api_key" {
 variable "aws_api_secret" {
   type = string
 }
+variable "aws_trigger_ci" {
+  type = bool
+  default = true
+}

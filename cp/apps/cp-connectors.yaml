@@ -1,0 +1,29 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: ops-db-cdc
+  namespace: confluent
+spec:
+  class: "io.debezium.connector.postgresql.PostgresConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  configs:
+    name: ops-db-cdc
+    connector.class: io.debezium.connector.postgresql.PostgresConnector
+    plugin.name: pgoutput
+    topic.prefix: hsbc_ops_cp
+    kafka.auth.mode: KAFKA_API_KEY
+    kafka.api.key: ${file:/mnt/secrets/connector-secrets/connect.txt:username}
+    kafka.api.secret : ${file:/mnt/secrets/connector-secrets/connect.txt:password}
+    tasks.max: "4"
+    database.hostname: hsbc-ops-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com
+    database.port: "5432"
+    database.user: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_user}
+    database.password: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_pass}
+    database.dbname: hsbcOpsDB
+    database.server.name: hsbc-ops-db
+    output.data.format: JSON
+    after.state.only: "false"
+    decimal.handling.mode: double
+    snapshot.mode: initial

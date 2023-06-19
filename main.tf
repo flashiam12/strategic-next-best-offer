@@ -29,4 +29,33 @@ module "devops" {
   aws_region = var.aws_region
   aws_api_key = var.aws_api_key
   aws_api_secret = var.aws_secret_key
+  aws_trigger_ci = false
+}
+
+module "vpc-peering_example_single-account-single-region-with-options" {
+  source  = "grem11n/vpc-peering/aws"
+  version = "6.0.0"
+  
+  providers = {
+    aws.this = aws
+    aws.peer = aws
+  }
+  
+  this_vpc_id = module.cp.aws_ops_vpc_id
+  peer_vpc_id = module.external.aws_db_vpc_id
+
+  auto_accept_peering = true
+
+  // Peering options for requester
+  this_dns_resolution        = true
+
+  // Peering options for accepter
+  peer_dns_resolution        = true
+
+  tags = {
+    Name        = "ops-eks-db-vpc-peering"
+    Environment = "ops"
+    Kind        = "strategic"
+    Terraform   = "True"
+  }
 }

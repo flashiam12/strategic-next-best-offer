@@ -4,5 +4,7 @@ metadata:
   name: cp-enriched-customer-behaviour
   namespace: confluent
 spec:
+  replicas: 3
+  partitionCount: 6
   kafkaRestClassRef:
     name: krc-cfk

@@ -10,6 +10,14 @@ module "cc" {
   aws_kinesis_stream = module.external.aws_kinesis_stream_name
   aws_kinesis_stream_region = var.aws_region
   aws_s3_bucket = module.external.aws_s3_bucket_name
+  gcp_project_id = var.gcp_project_id
+  gcp_region = var.gcp_region
+  gcp_zone = var.gcp_zone
+  gcp_credentials = var.gcp_cred_path
+  gcp_service_account_email = var.gcp_sa_email
+  gcp_pub_sub_topic_id = module.external.gcp_pub_sub_topic_id
+  gcp_pub_sub_sub_id = module.external.gcp_pub_sub_sub_id
+  gcp_bigtable_dataset = module.external.gcp_bigtable_dataset
 }
 
 module "cp" {
@@ -39,7 +47,11 @@ module "devops" {
   aws_region = var.aws_region
   aws_api_key = var.aws_api_key
   aws_api_secret = var.aws_secret_key
-  aws_trigger_ci = false
+  aws_trigger_ci = true
+  aws_rds_db_name = module.external.aws_rds_db_name
+  aws_rds_db_pass = module.external.aws_rds_db_password
+  aws_rds_db_uri = module.external.aws_rds_db_address
+  aws_rds_db_user = module.external.aws_rds_db_username
 }
 
 module "vpc-peering_example_single-account-single-region-with-options" {

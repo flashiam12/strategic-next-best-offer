@@ -10,7 +10,7 @@ module "aws-cc" {
   aws_kinesis_stream = var.aws_kinesis_stream
   aws_kinesis_stream_region = var.aws_kinesis_stream_region
   aws_s3_bucket = var.aws_s3_bucket
-  aws_create_cc_connectors = true
+  aws_create_cc_connectors = false
 }
 
 data "confluent_kafka_cluster" "aws-cc-cluster" {
@@ -27,6 +27,16 @@ module "gcp-cc" {
   confluent_cloud_env_id = confluent_environment.default.id
   confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
   gcp_cc_cluster_region = var.gcp_cc_cluster_region
+  gcp_project_id = var.gcp_project_id
+  gcp_region = var.gcp_region
+  gcp_zone = var.gcp_zone
+  gcp_credentials = var.gcp_credentials
+  gcp_service_account_email = var.gcp_service_account_email
+  gcp_pub_sub_topic_id = var.gcp_pub_sub_topic_id
+  gcp_pub_sub_sub_id = var.gcp_pub_sub_sub_id
+  gcp_bigtable_dataset = var.gcp_bigtable_dataset
+  gcp_cc_bq_sink_topic = "cp-enriched-customer-behaviour"
+  gcp_create_cc_connectors = false
 }
 
 data "confluent_kafka_cluster" "gcp-cc-cluster" {

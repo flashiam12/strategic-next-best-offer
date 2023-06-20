@@ -17,3 +17,19 @@ variable "aws_trigger_ci" {
   type = bool
   default = true
 }
+
+variable "aws_rds_db_user" {
+  type = string
+}
+
+variable "aws_rds_db_pass" {
+  type = string
+}
+
+variable "aws_rds_db_uri" {
+  type = string
+}
+
+variable "aws_rds_db_name" {
+  type = string
+}

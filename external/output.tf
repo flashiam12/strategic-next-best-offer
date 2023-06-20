@@ -25,3 +25,13 @@ output "aws_kinesis_stream_name" {
 output "aws_s3_bucket_name" {
   value = module.s3_bucket.s3_bucket_id
 }
+output "gcp_pub_sub_topic_id" {
+  value = module.pubsub.topic
+}
+output "gcp_pub_sub_sub_id" {
+  value = module.pubsub.subscription_names[0]
+}
+output "gcp_bigtable_dataset" {
+  value = module.bigquery.bigquery_dataset.id
+}
+

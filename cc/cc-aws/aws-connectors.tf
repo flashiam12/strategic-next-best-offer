@@ -15,7 +15,7 @@ resource "confluent_connector" "KinesisSource" {
   }
 
   config_nonsensitive = {
-    "name" : "hsbc-aws-propensity-stream",
+    "name" : "hsbc-aws-customer-propensity-stream",
     "connector.class": "KinesisSource",
     "kafka.auth.mode": "KAFKA_API_KEY",
     "kafka.topic" : "customer-propensity-score",
@@ -55,7 +55,7 @@ resource "confluent_connector" "S3Sink" {
   }
 
   config_nonsensitive = {
-    "name" : "hsbc-aws-next-best-offer-bucket",
+    "name" : "hsbc-aws-next-best-offer-per-activity-bucket",
     "connector.class": "S3_SINK",
     "kafka.auth.mode": "KAFKA_API_KEY",
     "input.data.format": "JSON",

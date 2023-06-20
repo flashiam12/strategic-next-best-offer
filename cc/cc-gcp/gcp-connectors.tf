@@ -8,9 +8,9 @@ resource "confluent_connector" "PubSubSource" {
   }
 
   config_sensitive = {
-    "kafka.api.key": var.confluent_cloud_api_key,
-    "kafka.api.secret" : var.confluent_cloud_api_secret,
-    "gcp.pubsub.credentials.json" : var.gcp_credentials
+    "kafka.api.key": confluent_api_key.shiv-dedicated-public-kafka-api-key.id,
+    "kafka.api.secret" : confluent_api_key.shiv-dedicated-public-kafka-api-key.secret,
+    "gcp.pubsub.credentials.json" : file(var.gcp_credentials)
   }
 
   config_nonsensitive = {
@@ -32,7 +32,7 @@ resource "confluent_connector" "PubSubSource" {
   ]
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -46,10 +46,24 @@ resource "confluent_connector" "BigQuerySink" {
   }
 
   config_sensitive = {
-
+    "kafka.api.key" : confluent_api_key.shiv-dedicated-public-kafka-api-key.id,
+    "kafka.api.secret" : confluent_api_key.shiv-dedicated-public-kafka-api-key.secret,
+    "keyfile" : file(var.gcp_credentials)
   }
 
   config_nonsensitive = {
+    "name" : "hsbc-enriched-customer-activity-table",
+    "connector.class" : "BigQuerySink",
+    "kafka.auth.mode": "KAFKA_API_KEY",
+    "project" : var.gcp_project_id,
+    "datasets" : split("/", var.gcp_bigtable_dataset)[3],
+    "input.data.format" : "JSON",
+    "autoCreateTables" : "true"
+    "sanitizeTopics" : "true"
+    "autoUpdateSchemas" : "true"
+    "sanitizeFieldNames" : "true"
+    "tasks.max" : "1"
+    "topics" : var.gcp_cc_bq_sink_topic
   }
 
   depends_on = [
@@ -60,6 +74,6 @@ resource "confluent_connector" "BigQuerySink" {
   ]
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }

@@ -72,3 +72,11 @@ variable "gcp_pub_sub_topic_id" {
 variable "gcp_pub_sub_sub_id" {
   type = string
 }
+
+variable "gcp_bigtable_dataset" {
+  type = string
+}
+
+variable "gcp_cc_bq_sink_topic" {
+  type = string
+}

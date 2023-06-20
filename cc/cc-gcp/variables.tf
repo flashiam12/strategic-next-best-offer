@@ -44,3 +44,31 @@ variable "gcp_create_cc_connectors" {
   type = bool
   default = false
 }
+
+variable "gcp_project_id" {
+  type = string
+}
+
+variable "gcp_region"{
+  type = string
+}
+
+variable "gcp_zone" {
+  type = string
+}
+
+variable "gcp_credentials" {
+  type = string
+}
+
+variable "gcp_service_account_email" {
+  type = string
+}
+
+variable "gcp_pub_sub_topic_id" {
+  type = string
+}
+
+variable "gcp_pub_sub_sub_id" {
+  type = string
+}

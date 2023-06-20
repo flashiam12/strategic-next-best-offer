@@ -12,6 +12,20 @@ locals {
 
 data "aws_caller_identity" "current" {}
 
+# resource "aws_db_parameter_group" "default" {
+#   name   = "pg-cdc-hsbc-ops"
+#   family = "postgres14"
+
+#   parameter {
+#     name  = "rds.logical_replication"
+#     value = "1"
+#   }
+
+#   lifecycle {
+#     create_before_destroy = true
+#   }
+# }
+
 
 
 ################################################################################

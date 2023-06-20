@@ -45,4 +45,22 @@ variable "aws_create_cc_connectors" {
   default = false
 }
 
+variable "aws_api_key" {
+  type = string
+}
 
+variable "aws_api_secret" {
+  type = string
+}
+
+variable "aws_kinesis_stream" {
+  type = string
+}
+
+variable "aws_kinesis_stream_region" {
+  type = string
+}
+
+variable "aws_s3_bucket" {
+  type = string
+}

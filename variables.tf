@@ -27,6 +27,22 @@ variable "aws_secret_key" {
   type = string
 }
 
+variable "gcp_project_id" {
+  type = string
+}
+
+variable "gcp_zone" {
+  type = string
+}
+
+variable "gcp_sa_email" {
+  type = string
+}
+
+variable "gcp_cred_path"{
+  type = string
+}
+
 # variable "gcp_service_account_file" {
 #   type = string
 # }

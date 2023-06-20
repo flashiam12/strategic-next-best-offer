@@ -8,10 +8,20 @@ resource "confluent_connector" "PubSubSource" {
   }
 
   config_sensitive = {
-
+    "kafka.api.key": var.confluent_cloud_api_key,
+    "kafka.api.secret" : var.confluent_cloud_api_secret,
+    "gcp.pubsub.credentials.json" : var.gcp_credentials
   }
 
   config_nonsensitive = {
+    "name" : "hsbc-gcp-activity-next-best-offer",
+    "connector.class": "PubSubSource",
+    "kafka.auth.mode": "KAFKA_API_KEY",
+    "kafka.topic" : local.topic_ids[0],
+    "gcp.pubsub.project.id": var.gcp_project_id,
+    "gcp.pubsub.topic.id":var.gcp_pub_sub_topic_id,
+    "gcp.pubsub.subscription.id": var.gcp_pub_sub_sub_id,
+    "tasks.max" : "1"
   }
 
   depends_on = [

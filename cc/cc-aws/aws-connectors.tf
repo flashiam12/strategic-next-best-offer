@@ -8,10 +8,22 @@ resource "confluent_connector" "KinesisSource" {
   }
 
   config_sensitive = {
-
+    "kafka.api.key": confluent_api_key.shiv-dedicated-public-kafka-api-key.id
+    "kafka.api.secret" : confluent_api_key.shiv-dedicated-public-kafka-api-key.secret,
+    "aws.access.key.id" : var.aws_api_key,
+    "aws.secret.key.id": var.aws_api_secret
   }
 
   config_nonsensitive = {
+    "name" : "hsbc-aws-propensity-stream",
+    "connector.class": "KinesisSource",
+    "kafka.auth.mode": "KAFKA_API_KEY",
+    "kafka.topic" : "customer-propensity-score",
+    "kinesis.stream": var.aws_kinesis_stream,
+    "kinesis.region" : var.aws_kinesis_stream_region,
+    "kinesis.position": "AT_TIMESTAMP",
+    "kinesis.shard.timestamp": "1980-12-01"
+    "tasks.max" : "1"
   }
 
   depends_on = [
@@ -22,7 +34,7 @@ resource "confluent_connector" "KinesisSource" {
   ]
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }
 
@@ -36,10 +48,25 @@ resource "confluent_connector" "S3Sink" {
   }
 
   config_sensitive = {
-
+    "kafka.api.key": confluent_api_key.shiv-dedicated-public-kafka-api-key.id
+    "kafka.api.secret" : confluent_api_key.shiv-dedicated-public-kafka-api-key.secret,
+    "aws.access.key.id" : var.aws_api_key,
+    "aws.secret.access.key": var.aws_api_secret
   }
 
   config_nonsensitive = {
+    "name" : "hsbc-aws-next-best-offer-bucket",
+    "connector.class": "S3_SINK",
+    "kafka.auth.mode": "KAFKA_API_KEY",
+    "input.data.format": "JSON",
+    "output.data.format": "JSON",
+    "compression.codec": "JSON - gzip",
+    "s3.compression.level": "6",
+    "s3.bucket.name": var.aws_s3_bucket,
+    "time.interval" : "HOURLY",
+    "flush.size": "1000",
+    "tasks.max" : "1",
+    "topics": "aws-next-best-offers-per-customer-activity-event"
   }
 
   depends_on = [
@@ -50,6 +77,6 @@ resource "confluent_connector" "S3Sink" {
   ]
 
   lifecycle {
-    prevent_destroy = true
+    prevent_destroy = false
   }
 }

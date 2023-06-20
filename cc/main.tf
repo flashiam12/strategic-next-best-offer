@@ -5,6 +5,12 @@ module "aws-cc" {
   confluent_cloud_env_id = confluent_environment.default.id
   confluent_cloud_schema_registry_id = confluent_schema_registry_cluster.essentials.id
   aws_cc_cluster_region = var.aws_cc_cluster_region
+  aws_api_key = var.aws_api_key
+  aws_api_secret = var.aws_api_secret
+  aws_kinesis_stream = var.aws_kinesis_stream
+  aws_kinesis_stream_region = var.aws_kinesis_stream_region
+  aws_s3_bucket = var.aws_s3_bucket
+  aws_create_cc_connectors = true
 }
 
 data "confluent_kafka_cluster" "aws-cc-cluster" {

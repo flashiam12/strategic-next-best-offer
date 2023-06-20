@@ -19,4 +19,9 @@ output "aws_rds_db_port" {
 output "aws_db_vpc_id" {
   value = module.db-ops-vpc.vpc_id
 }
-
+output "aws_kinesis_stream_name" {
+  value = module.kinesis-stream.kinesis_stream_name
+}
+output "aws_s3_bucket_name" {
+  value = module.s3_bucket.s3_bucket_id
+}

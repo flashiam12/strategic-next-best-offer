@@ -1,0 +1,44 @@
+[
+    {
+      "description": "Full customer ID",
+      "mode": "NULLABLE",
+      "name": "CUSTOMER_ID",
+      "type": "STRING"
+    },
+    {
+      "description": "Customer Gender",
+      "mode": "NULLABLE",
+      "name": "GENDER",
+      "type": "STRING"
+    },
+    {
+      "description": "Customer Income",
+      "mode": "NULLABLE",
+      "name": "INCOME",
+      "type": "INTEGER"
+    },
+    {
+      "description": "Fico Score",
+      "mode": "NULLABLE",
+      "name": "FICO",
+      "type": "INTEGER"
+    },
+    {
+      "description": "Activity id ",
+      "mode": "NULLABLE",
+      "name": "ACTIVITY_ID",
+      "type": "STRING"
+    },
+    {
+        "description": "Activity type",
+        "mode": "NULLABLE",
+        "name": "ACTIVITY_TYPE",
+        "type": "STRING"
+    },
+    {
+        "description": "Propensity to buy",
+        "mode": "NULLABLE",
+        "name": "PROPENSITY_TO_BUY",
+        "type": "STRING"
+    }
+]

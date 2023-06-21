@@ -10,16 +10,15 @@ def main():
         # for x in range(0, 10):
             print("Creating dataset for {} time".format(i))
             fake = Faker()
-            name = fake.name
             customer_registration = CustomerRegistration(
-                FIRST_NAME = fake.first_name,
-                LAST_NAME = fake.last_name,
-                EMAIL = fake.email,
+                FIRST_NAME = fake.first_name(),
+                LAST_NAME = fake.last_name(),
+                EMAIL = fake.email(),
                 GENDER = choice(["MALE", "FEMALE", "OTHER"]),
-                INCOME = uniform(1000, 1000000),
-                FICO = uniform(100,800)
+                INCOME = int(uniform(1000, 1000000)),
+                FICO = int(uniform(100,800))
             )
-            print("{0}:{1}".format(i, customer_registration.__dict__))
+            # print("{0}:{1}".format(i, customer_registration.__dict__))
             db.add(customer_registration)
             db.commit()
     except Exception as e:
@@ -28,6 +27,7 @@ def main():
         db.close()
 
 if __name__=="__main__":
+    # Base.metadata.create_all(checkfirst=True)
     print("Starting batch job to produce dataset")
     main()
     print("Gracefully exitiing...")

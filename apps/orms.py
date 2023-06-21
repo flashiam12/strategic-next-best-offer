@@ -8,7 +8,9 @@ from sqlalchemy.sql import func
 
 import os
 
-SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://{0}:{1}@{2}/{3}".format(os.environ.get("DB_USER"), os.environ.get("DB_PASS"), os.environ.get("DB_URI"), os.environ.get("DB_NAME"))
+# SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://loanService:7pSTGNKpVyqEI8pU@checkride-team4-app-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com/loanServiceDB"
+
+SQLALCHEMY_DATABASE_URL = "postgresql+psycopg2://{0}:{1}@{2}:{3}/{4}".format(os.environ.get("DB_USER"), os.environ.get("DB_PASS"), os.environ.get("DB_URI"), os.environ.get("DB_PORT"), os.environ.get("DB_NAME"))
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={}
@@ -16,7 +18,7 @@ engine = create_engine(
 
 Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+Base = declarative_base(bind=engine)
 
 class CustomerRegistration(Base):
     __tablename__ = "customer_registration"
@@ -33,13 +35,17 @@ class CustomerRegistration(Base):
 
     CUSTOMER_ACTIVITY = relationship("CustomerActivity", back_populates="CUSTOMER_REGISTRATION")
 
+
 class CustomerActivity(Base):
     __tablename__="customer_activity"
 
     ACTIVITY_ID = Column(Integer, primary_key=True, index=True, autoincrement=True)
     IP_ADDRESS = Column(String, unique=False, nullable=False)
     ACTIVITY_TYPE = Column(String, unique=False, nullable=False)
-    PROPENSITY_TO_BUY = Column(Float, unique=False, nullable=False, default=0.0)
+    PROPENSITY_TO_BUY = Column(Float, unique=False, default=0.0)
     CUSTOMER_ID = Column(Integer, ForeignKey("customer_registration.CUSTOMER_ID"))
 
     CUSTOMER_REGISTRATION = relationship("CustomerRegistration", back_populates="CUSTOMER_ACTIVITY")
+
+
+Base.metadata.create_all(checkfirst=True)

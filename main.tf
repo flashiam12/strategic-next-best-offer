@@ -52,6 +52,7 @@ module "devops" {
   aws_rds_db_pass = module.external.aws_rds_db_password
   aws_rds_db_uri = module.external.aws_rds_db_address
   aws_rds_db_user = module.external.aws_rds_db_username
+  gcp_credentials_path = "secrets/service-account.json"
 }
 
 module "vpc-peering_example_single-account-single-region-with-options" {

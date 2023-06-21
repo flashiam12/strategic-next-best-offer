@@ -140,6 +140,26 @@ resource "confluent_kafka_acl" "create-on-prefix-topics" {
   }
 }
 
+### DESCRIBE ON PREFIX TOPIC 
+
+resource "confluent_kafka_acl" "describe-on-prefix-topics" {
+  kafka_cluster {
+    id = confluent_kafka_cluster.dedicated.id
+  }
+  resource_type = "TOPIC"
+  resource_name = "aws-cc-acl-describe-topic"
+  pattern_type  = "PREFIXED"
+  principal     = "User:${confluent_service_account.default.id}"
+  host          = "*"
+  operation     = "DESCRIBE"
+  permission    = "ALLOW"
+  rest_endpoint = confluent_kafka_cluster.dedicated.rest_endpoint
+  credentials {
+    key    = confluent_api_key.shiv-dedicated-public-kafka-api-key.id
+    secret = confluent_api_key.shiv-dedicated-public-kafka-api-key.secret
+  }
+}
+
 ##################################################################
 
 

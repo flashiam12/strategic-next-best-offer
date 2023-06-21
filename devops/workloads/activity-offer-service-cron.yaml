@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: activity-offer-service-cron
+  namespace: internal
+spec:
+  schedule: "* * * * *"
+  concurrencyPolicy: Allow
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: activity-offer
+            env:
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: DB_PASS
+            - name: DB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: DB_URI
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: apps-secret
+                  key: DB_NAME
+            - name: DB_PORT
+              value: "5432"
+            - name: ITERATION_COUNT
+              value: "100"
+            - name: KINESIS_STREAM_NAME
+              value: hsbc_customer_analytics_stream
+            - name: GCP_PROJECT
+              value: sales-engineering-206314
+            - name: GCP_PUB_SUB_TOPIC
+              value: hsbc-next-best-offer-topic
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: "/tmp/service-account.json"
+            image: 829250931565.dkr.ecr.us-west-2.amazonaws.com/hsbc-ops-docker-registry:latest
+            volumeMounts:
+            - name: gcp-cred
+              mountPath: "/tmp/service-account.json"
+              subPath: service-account.json
+              readOnly: true
+            imagePullPolicy: Always
+            command:
+            - python
+            - activity-offer-service.py
+          restartPolicy: OnFailure
+          volumes:
+            - name: gcp-cred
+              secret:
+                secretName: gcp-credentials
+                items:
+                  - key: service-account.json
+                    path: service-account.json

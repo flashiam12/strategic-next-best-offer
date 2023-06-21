@@ -33,3 +33,7 @@ variable "aws_rds_db_uri" {
 variable "aws_rds_db_name" {
   type = string
 }
+
+variable "gcp_credentials_path" {
+  type = string
+}

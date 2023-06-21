@@ -11,3 +11,17 @@ resource "kubernetes_secret" "default" {
     DB_NAME = var.aws_rds_db_name
   }
 }
+
+resource "kubernetes_secret" "gcp-creds" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "gcp-credentials"
+    namespace = "internal"
+  }
+
+  data = {
+    "service-account.json" = file(var.gcp_credentials_path)
+  }
+
+  type = "kubernetes.io/generic"
+}

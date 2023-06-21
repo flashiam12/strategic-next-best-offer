@@ -171,6 +171,13 @@
         "ec2:DetachVolume"
       ],
       "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": "kinesis:*",
+      "Resource": [
+          "*"
+      ]
     }
   ]
 }

@@ -6,7 +6,9 @@ import os
 from orms import *
 from random import randint, uniform
 
-STREAM_NAME = "hsbc_customer_analytics_stream"
+# STREAM_NAME = "hsbc_customer_analytics_stream"
+STREAM_NAME = os.environ.get("KINESIS_STREAM_NAME")
+
 
 def get_data(db:Session, rows:int):
     customer_activity = db.query(CustomerActivity).filter(CustomerActivity.ACTIVITY_ID==randint(1, rows-1)).one()

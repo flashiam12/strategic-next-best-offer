@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: customer-registration-service-cron
+  name: customer-activity-service-cron
   namespace: internal
 spec:
   schedule: "* * * * *"
@@ -14,7 +14,7 @@ spec:
       template:
         spec:
           containers:
-          - name: customer-registration
+          - name: customer-activity
             env:
             - name: DB_USER
               valueFrom:
@@ -44,5 +44,5 @@ spec:
             imagePullPolicy: Always
             command:
             - python
-            - customer-registration-service.py
+            - customer-activity-service.py
           restartPolicy: OnFailure

@@ -21,6 +21,10 @@ resource "confluent_connector" "PubSubSource" {
     "gcp.pubsub.project.id": var.gcp_project_id,
     "gcp.pubsub.topic.id":var.gcp_pub_sub_topic_id,
     "gcp.pubsub.subscription.id": var.gcp_pub_sub_sub_id,
+    "auto.create.tables": true,
+    "auto.update.schemas": true,
+    "sanitize.topics": true,
+    "sanitize.field.names": false,
     "tasks.max" : "1"
   }
 

@@ -27,3 +27,6 @@ spec:
     after.state.only: "false"
     decimal.handling.mode: double
     snapshot.mode: initial
+    transforms: ExtractField
+    transforms.ExtractField.field: after
+    transforms.ExtractField.type: org.apache.kafka.connect.transforms.ExtractField$Value

@@ -20,19 +20,19 @@ module "bigquery" {
         purpose    = "strategic"
       },
     },
-    {
-      table_id           = "cp_enriched_customer_behaviour",
-      schema             = file("${path.module}/hsbc_customer_activity_schema.json"),
-      time_partitioning  = null,
-      range_partitioning = null,
-      expiration_time    = 2524604400000, # 2050/01/01
-      clustering         = [],
-      labels = {
-        env      = "analytics"
-        billable = "true"
-        purpose    = "strategic"
-      },
-    }
+    # {
+    #   table_id           = "cp_enriched_customer_behaviour",
+    #   schema             = file("${path.module}/hsbc_customer_activity_schema.json"),
+    #   time_partitioning  = null,
+    #   range_partitioning = null,
+    #   expiration_time    = 2524604400000, # 2050/01/01
+    #   clustering         = [],
+    #   labels = {
+    #     env      = "analytics"
+    #     billable = "true"
+    #     purpose    = "strategic"
+    #   },
+    # }
   ]
   dataset_labels = {
     env      = "analytics"

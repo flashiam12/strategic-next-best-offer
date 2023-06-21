@@ -47,7 +47,7 @@ module "devops" {
   aws_region = var.aws_region
   aws_api_key = var.aws_api_key
   aws_api_secret = var.aws_secret_key
-  aws_trigger_ci = true
+  aws_trigger_ci = false
   aws_rds_db_name = module.external.aws_rds_db_name
   aws_rds_db_pass = module.external.aws_rds_db_password
   aws_rds_db_uri = module.external.aws_rds_db_address

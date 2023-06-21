@@ -1,4 +1,5 @@
 resource "kubernetes_secret" "default" {
+  provider = kubernetes.kubernetes-raw
   metadata {
     name = "apps-secret"
     namespace = "internal"

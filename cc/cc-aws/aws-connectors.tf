@@ -21,8 +21,7 @@ resource "confluent_connector" "KinesisSource" {
     "kafka.topic" : "customer-propensity-score",
     "kinesis.stream": var.aws_kinesis_stream,
     "kinesis.region" : var.aws_kinesis_stream_region,
-    "kinesis.position": "AT_TIMESTAMP",
-    "kinesis.shard.timestamp": "1980-12-01"
+    "kinesis.position": "LATEST",
     "tasks.max" : "1"
   }
 

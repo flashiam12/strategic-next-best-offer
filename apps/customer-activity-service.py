@@ -15,7 +15,7 @@ def main():
             customer_registration = CustomerActivity(
                 IP_ADDRESS = fake.ipv4(),
                 ACTIVITY_TYPE = choice(["branch_visit", "deposit", "web_open", "mobile_open", "new_account"]),
-                PROPENSITY_TO_BUY = round(uniform(0.0, 0.99), 2),
+                PROPENSITY_TO_BUY = 0.0,
                 CUSTOMER_REGISTRATION = customer
             )
             db.add(customer_registration)

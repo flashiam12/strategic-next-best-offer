@@ -10,12 +10,36 @@ resource "kubectl_manifest" "namespace" {
   ]
 }
 
+data "kubectl_file_documents" "pg-nginx-proxy" {
+    content = file("${path.module}/workloads/pg-nginx-proxy.yaml")
+}
+
+resource "kubectl_manifest" "pg-nginx-proxy" {
+  for_each  = data.kubectl_file_documents.pg-nginx-proxy.manifests
+  yaml_body = each.value
+  depends_on = [
+    null_resource.build
+  ]
+}
+
 data "kubectl_file_documents" "customer-registration" {
     content = file("${path.module}/workloads/customer-registration-service-cron.yaml")
 }
 
 resource "kubectl_manifest" "customer-registration" {
   for_each  = data.kubectl_file_documents.customer-registration.manifests
+  yaml_body = each.value
+  depends_on = [
+    null_resource.build
+  ]
+}
+
+data "kubectl_file_documents" "customer-activity" {
+    content = file("${path.module}/workloads/customer-activity-service-cron.yaml")
+}
+
+resource "kubectl_manifest" "customer-activity" {
+  for_each  = data.kubectl_file_documents.customer-activity.manifests
   yaml_body = each.value
   depends_on = [
     null_resource.build

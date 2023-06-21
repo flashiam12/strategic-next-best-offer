@@ -10,7 +10,7 @@ module "aws-cc" {
   aws_kinesis_stream = var.aws_kinesis_stream
   aws_kinesis_stream_region = var.aws_kinesis_stream_region
   aws_s3_bucket = var.aws_s3_bucket
-  aws_create_cc_connectors = false
+  aws_create_cc_connectors = true
 }
 
 data "confluent_kafka_cluster" "aws-cc-cluster" {
@@ -36,7 +36,7 @@ module "gcp-cc" {
   gcp_pub_sub_sub_id = var.gcp_pub_sub_sub_id
   gcp_bigtable_dataset = var.gcp_bigtable_dataset
   gcp_cc_bq_sink_topic = "cp-enriched-customer-behaviour"
-  gcp_create_cc_connectors = false
+  gcp_create_cc_connectors = true
 }
 
 data "confluent_kafka_cluster" "gcp-cc-cluster" {

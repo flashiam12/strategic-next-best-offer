@@ -7,7 +7,7 @@ spec:
   replicas: 2
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka-0.kafka.confluent.svc.cluster.local:9092
+      bootstrapEndpoint: kafka-bootstrap-lb.confluent.svc.cluster.local:9092
       authentication:
         type: plain                
         jaasConfig:               
@@ -30,4 +30,5 @@ spec:
       nodePortOffset: 30610
   configOverrides:
     server:
-      - advertised.listeners=cp-ksqldb.hsbc-ops.selabs.net 
+      - advertised.listeners=https://0.0.0.0:8088 
+      - listeners=https://0.0.0.0:8088 

@@ -36,7 +36,7 @@ variable "gcp_cc_ksql_cluster_name" {
 variable "gcp_cc_topics" {
   type = list(string)
   default = [
-    "gcp-new-offers-per-activity-type"
+    "gcp-next-best-offer"
   ]
 }
 

@@ -1,0 +1,18 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: elastic-cc-aws
+  namespace: elastic-system
+spec:
+  class: "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  configs:
+    name: elastic-cc-aws
+    connector.class: io.confluent.connect.elasticsearch.ElasticsearchSinkConnector
+    tasks.max: "4"
+    topics: aws-next-best-offers-per-customer-activity-event
+    key.ignore: "true"
+    connection.url: https://ops-elasticsearch-es-client.elastic-system.svc.cluster.local:9200
+    type.name: "kafka-connect"

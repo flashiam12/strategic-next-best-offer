@@ -17,7 +17,7 @@ resource "confluent_connector" "PubSubSource" {
     "name" : "hsbc-gcp-activity-next-best-offer",
     "connector.class": "PubSubSource",
     "kafka.auth.mode": "KAFKA_API_KEY",
-    "kafka.topic" : local.topic_ids[0],
+    "kafka.topic" : "gcp-next-best-offer",
     "gcp.pubsub.project.id": var.gcp_project_id,
     "gcp.pubsub.topic.id":var.gcp_pub_sub_topic_id,
     "gcp.pubsub.subscription.id": var.gcp_pub_sub_sub_id,

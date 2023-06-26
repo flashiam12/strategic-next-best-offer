@@ -41,6 +41,6 @@ spec:
     nodePort:
       host: cc-connect-elastic.hsbc-ops.selabs.net
       nodePortOffset: 30623
-  configOverrides:
-    server:
-      - advertised.listeners=cc-connect-elastic.hsbc-ops.selabs.net
+  # configOverrides:
+  #   server:
+  #     - advertised.listeners=cc-connect-elastic.hsbc-ops.selabs.net

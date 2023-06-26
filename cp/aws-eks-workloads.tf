@@ -40,6 +40,18 @@ resource "kubectl_manifest" "cp-connectors" {
   ]
 }
 
+# data "kubectl_file_documents" "cp-infinix-connectors" {
+#     content = file("${path.module}/apps/cp-infinix-db-connector.yaml")
+# }
+
+# resource "kubectl_manifest" "cp-infinix-connectors" {
+#   for_each  = data.kubectl_file_documents.cp-infinix-connectors.manifests
+#   yaml_body = each.value
+#   depends_on = [
+#     kubectl_manifest.cp-connect
+#   ]
+# }
+
 data "kubectl_file_documents" "cp-connect" {
     content = file("${path.module}/apps/cp-connect.yaml")
 }
@@ -74,24 +86,24 @@ resource "kubectl_manifest" "cp-ksql" {
   ]
 }
 
-data "kubectl_file_documents" "cp-controlcenter" {
-    content = file("${path.module}/apps/cp-controlcenter.yaml")
-}
+# data "kubectl_file_documents" "cp-controlcenter" {
+#     content = file("${path.module}/apps/cp-controlcenter.yaml")
+# }
 
-resource "kubectl_manifest" "cp-controlcenter" {
-  for_each  = data.kubectl_file_documents.cp-controlcenter.manifests
-  yaml_body = each.value
-  depends_on = [
-    helm_release.confluent-operator,
-    kubernetes_secret.ca-pair-sslcerts,
-    kubernetes_secret.credential,
-    kubernetes_secret.rest-credential,
-    kubernetes_secret.password-encoder-secret,
-    kubectl_manifest.cp-cluster,
-    kubectl_manifest.cp-connect,
-    kubectl_manifest.cp-ksql
-  ]
-}
+# resource "kubectl_manifest" "cp-controlcenter" {
+#   for_each  = data.kubectl_file_documents.cp-controlcenter.manifests
+#   yaml_body = each.value
+#   depends_on = [
+#     helm_release.confluent-operator,
+#     kubernetes_secret.ca-pair-sslcerts,
+#     kubernetes_secret.credential,
+#     kubernetes_secret.rest-credential,
+#     kubernetes_secret.password-encoder-secret,
+#     kubectl_manifest.cp-cluster,
+#     kubectl_manifest.cp-connect,
+#     kubectl_manifest.cp-ksql
+#   ]
+# }
 
 data "kubectl_file_documents" "cp-cc-restclass" {
     content = file("${path.module}/apps/cp-cc-restclass.yaml")

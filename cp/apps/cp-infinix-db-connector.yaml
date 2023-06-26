@@ -1,0 +1,23 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: infinix-jdbc
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.jdbc.JdbcSourceConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  configs:
+    name: infinix-jdbc
+    topic.prefix: mercury
+    connector.class: io.confluent.connect.jdbc.JdbcSourceConnector
+    kafka.api.key: QHX7QZ5HM6JNHUHM
+    kafka.auth.mode: KAFKA_API_KEY
+    kafka.api.secret: mWNlp1gOw7YFb6G6oq38P0wSycbRq565S2yxHu7LdFVsVdS6cVcrNntXlliwM8kG
+    connection.url: jdbc:informix-sqli://18.221.7.34:9088/stores_demo:informixserver=ol_aws;user=ubuntu;password=password
+    connection.user: ubuntu
+    connection.password: password
+    mode: bulk
+    tasks.max: '1'
+    query: 'select * from employee '

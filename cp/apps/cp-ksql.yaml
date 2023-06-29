@@ -4,7 +4,9 @@ metadata:
   name: ksqldb
   namespace: confluent
 spec:
-  replicas: 2
+  replicas: 1
+  authentication:
+    type: mtls   
   dependencies:
     kafka:
       bootstrapEndpoint: kafka-bootstrap-lb.confluent.svc.cluster.local:9092
@@ -13,7 +15,7 @@ spec:
         jaasConfig:               
           secretRef: credential
   image:
-    application: confluentinc/cp-ksqldb-server:7.2.0
+    application: confluentinc/cp-ksqldb-server:7.3.0
     init: confluentinc/confluent-init-container:2.4.0
   dataVolumeCapacity: 10Gi
   tls:
@@ -28,7 +30,11 @@ spec:
     nodePort:
       host: cp-ksqldb.hsbc-ops.selabs.net
       nodePortOffset: 30610
+      externalTrafficPolicy: Cluster
+      sessionAffinity: ClientIP
+      sessionAffinityConfig: 
+        clientIP:
+          timeoutSeconds: 86400
   configOverrides:
     server:
-      - advertised.listeners=https://0.0.0.0:8088 
-      - listeners=https://0.0.0.0:8088 
+      - advertised.listeners=cp-ksqldb.hsbc-ops.selabs.net

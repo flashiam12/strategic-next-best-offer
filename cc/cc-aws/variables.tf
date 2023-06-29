@@ -36,7 +36,8 @@ variable "aws_cc_ksql_cluster_name" {
 variable "aws_cc_topics" {
   type = list(string)
   default = [
-    "aws-next-best-offers-per-customer-activity-event"
+    "aws-next-best-offers-per-customer-activity-event",
+    "aws-customer-propensity-score"
   ]
 }
 

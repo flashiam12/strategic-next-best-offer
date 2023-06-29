@@ -18,7 +18,7 @@ resource "confluent_connector" "KinesisSource" {
     "name" : "hsbc-aws-customer-propensity-stream",
     "connector.class": "KinesisSource",
     "kafka.auth.mode": "KAFKA_API_KEY",
-    "kafka.topic" : "customer-propensity-score",
+    "kafka.topic" : "aws-customer-propensity-score",
     "kinesis.stream": var.aws_kinesis_stream,
     "kinesis.region" : var.aws_kinesis_stream_region,
     "kinesis.position": "LATEST",

@@ -10,3 +10,9 @@ variable "aws_api_key" {
 variable "aws_api_secret" {
   type = string
 }
+variable "aws_acm_arn" {
+  type = string
+}
+variable "aws_public_subnet" {
+  type = string
+}

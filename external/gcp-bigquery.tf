@@ -7,8 +7,21 @@ module "bigquery" {
   location                   = "US"
   delete_contents_on_destroy = true
   tables = [
-    {
-      table_id           = "hsbc_customer_activity",
+    # {
+    #   table_id           = "hsbc_customer_activity",
+    #   schema             = file("${path.module}/hsbc_customer_activity_schema.json"),
+    #   time_partitioning  = null,
+    #   range_partitioning = null,
+    #   expiration_time    = 2524604400000, # 2050/01/01
+    #   clustering         = [],
+    #   labels = {
+    #     env      = "analytics"
+    #     billable = "true"
+    #     purpose    = "strategic"
+    #   },
+    # },
+      {
+      table_id           = "aws_customer_propensity_score",
       schema             = file("${path.module}/hsbc_customer_activity_schema.json"),
       time_partitioning  = null,
       range_partitioning = null,
@@ -19,7 +32,7 @@ module "bigquery" {
         billable = "true"
         purpose    = "strategic"
       },
-    },
+    }
     # {
     #   table_id           = "cp_enriched_customer_behaviour",
     #   schema             = file("${path.module}/hsbc_customer_activity_schema.json"),

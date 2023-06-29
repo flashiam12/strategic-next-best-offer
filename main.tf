@@ -61,7 +61,10 @@ module "dashboard" {
   aws_api_secret = var.aws_secret_key
   aws_eks_cluster_name = module.cp.aws_ops_eks_cluster_name
   aws_region = var.aws_region
+  aws_acm_arn = module.cp.aws_acm_cert_arn
+  aws_public_subnet = module.cp.aws_public_subnet
 }
+
 
 module "vpc-peering_example_single-account-single-region-with-options" {
   source  = "grem11n/vpc-peering/aws"

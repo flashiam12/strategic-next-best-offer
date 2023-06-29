@@ -14,5 +14,49 @@ spec:
     tasks.max: "4"
     topics: aws-next-best-offers-per-customer-activity-event
     key.ignore: "true"
-    connection.url: https://ops-elasticsearch-es-client.elastic-system.svc.cluster.local:9200
+    connection.url: https://elastic-http.hsbc-ops.selabs.net
+    connection.username: elastic
+    connection.password: 1598udEsiQpfW96he51X4T1H
+    type.name: "kafka-connect"
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: elastic-cc-cp
+  namespace: elastic-system
+spec:
+  class: "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  configs:
+    name: elastic-cc-cp
+    connector.class: io.confluent.connect.elasticsearch.ElasticsearchSinkConnector
+    tasks.max: "4"
+    topics: cp-enriched-customer-behaviour
+    key.ignore: "true"
+    connection.url: https://elastic-http.hsbc-ops.selabs.net
+    connection.username: elastic
+    connection.password: 1598udEsiQpfW96he51X4T1H
+    type.name: "kafka-connect"
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: elastic-cc-gcp
+  namespace: elastic-system
+spec:
+  class: "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect
+  configs:
+    name: elastic-cc-gcp
+    connector.class: io.confluent.connect.elasticsearch.ElasticsearchSinkConnector
+    tasks.max: "4"
+    topics: gcp-next-best-offer
+    key.ignore: "true"
+    connection.url: https://elastic-http.hsbc-ops.selabs.net
+    connection.username: elastic
+    connection.password: 1598udEsiQpfW96he51X4T1H
     type.name: "kafka-connect"

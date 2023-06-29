@@ -106,6 +106,15 @@ data "aws_lb" "cp-ingress" {
    ]
 }
 
+# data "aws_lb" "cp-ksqldb-bootstrap"{
+#   tags = {
+#     "service.k8s.aws/stack" = "confluent/ksqldb-bootstrap-lb"
+#   }
+#   depends_on = [ 
+#     kubectl_manifest.cp-ksql
+#   ]
+# }
+
 data "aws_lb" "cp-kafka-1" {
   tags = {
     "service.k8s.aws/stack" = "confluent/kafka-1-lb"

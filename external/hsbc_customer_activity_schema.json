@@ -40,5 +40,17 @@
         "mode": "NULLABLE",
         "name": "PROPENSITY_TO_BUY",
         "type": "STRING"
+    },
+    {
+      "description": "IP address of activity",
+      "mode": "NULLABLE",
+      "name": "IP_ADDRESS",
+      "type": "STRING"
+    },
+    {
+    "description": "Email of customer",
+    "mode": "NULLABLE",
+    "name": "EMAIL",
+    "type": "STRING"
     }
 ]

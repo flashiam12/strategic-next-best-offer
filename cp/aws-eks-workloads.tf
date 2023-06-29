@@ -1,5 +1,6 @@
 locals {
   cp_cc_fqdn = "cp-controlcenter.hsbc-ops.selabs.net"
+  cp_cc_clone_fqdn = "cp-controlcenter-clone.hsbc-ops.selabs.net"
   cp_connect_fqdn = "cp-connect.hsbc-ops.selabs.net"
   cp_ksql_fqdn = "cp-ksqldb.hsbc-ops.selabs.net"
   cp_sr_fqdn = "cp-schema-registry.hsbc-ops.selabs.net"
@@ -40,18 +41,6 @@ resource "kubectl_manifest" "cp-connectors" {
   ]
 }
 
-# data "kubectl_file_documents" "cp-infinix-connectors" {
-#     content = file("${path.module}/apps/cp-infinix-db-connector.yaml")
-# }
-
-# resource "kubectl_manifest" "cp-infinix-connectors" {
-#   for_each  = data.kubectl_file_documents.cp-infinix-connectors.manifests
-#   yaml_body = each.value
-#   depends_on = [
-#     kubectl_manifest.cp-connect
-#   ]
-# }
-
 data "kubectl_file_documents" "cp-connect" {
     content = file("${path.module}/apps/cp-connect.yaml")
 }
@@ -86,24 +75,43 @@ resource "kubectl_manifest" "cp-ksql" {
   ]
 }
 
-# data "kubectl_file_documents" "cp-controlcenter" {
-#     content = file("${path.module}/apps/cp-controlcenter.yaml")
-# }
+data "kubectl_file_documents" "cp-controlcenter" {
+    content = file("${path.module}/apps/cp-controlcenter.yaml")
+}
 
-# resource "kubectl_manifest" "cp-controlcenter" {
-#   for_each  = data.kubectl_file_documents.cp-controlcenter.manifests
-#   yaml_body = each.value
-#   depends_on = [
-#     helm_release.confluent-operator,
-#     kubernetes_secret.ca-pair-sslcerts,
-#     kubernetes_secret.credential,
-#     kubernetes_secret.rest-credential,
-#     kubernetes_secret.password-encoder-secret,
-#     kubectl_manifest.cp-cluster,
-#     kubectl_manifest.cp-connect,
-#     kubectl_manifest.cp-ksql
-#   ]
-# }
+resource "kubectl_manifest" "cp-controlcenter" {
+  for_each  = data.kubectl_file_documents.cp-controlcenter.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.confluent-operator,
+    kubernetes_secret.ca-pair-sslcerts,
+    kubernetes_secret.credential,
+    kubernetes_secret.rest-credential,
+    kubernetes_secret.password-encoder-secret,
+    kubectl_manifest.cp-cluster,
+    kubectl_manifest.cp-connect,
+    kubectl_manifest.cp-ksql
+  ]
+}
+
+data "kubectl_file_documents" "cp-controlcenter-clone" {
+    content = file("${path.module}/apps/cp-controlcenter-clone.yaml")
+}
+
+resource "kubectl_manifest" "cp-controlcenter-clone" {
+  for_each  = data.kubectl_file_documents.cp-controlcenter-clone.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.confluent-operator,
+    kubernetes_secret.ca-pair-sslcerts,
+    kubernetes_secret.credential,
+    kubernetes_secret.rest-credential,
+    kubernetes_secret.password-encoder-secret,
+    kubectl_manifest.cp-cluster,
+    kubectl_manifest.cp-connect,
+    kubectl_manifest.cp-ksql
+  ]
+}
 
 data "kubectl_file_documents" "cp-cc-restclass" {
     content = file("${path.module}/apps/cp-cc-restclass.yaml")
@@ -161,6 +169,28 @@ data "kubectl_file_documents" "cp-controlcenter-ingress" {
 resource "kubectl_manifest" "cp-controlcenter-ingress" {
   # for_each  = data.kubectl_file_documents.cp-ingress.manifests
   yaml_body = data.kubectl_file_documents.cp-controlcenter-ingress.content
+  depends_on = [
+    helm_release.confluent-operator,
+    kubectl_manifest.cp-cc-restclass,
+    kubernetes_secret.jaasconfig-ccloud,
+    kubernetes_secret.ccloud-tls-certs,
+    kubernetes_secret.credential,
+    kubectl_manifest.cp-controlcenter
+  ]
+}
+
+data "kubectl_file_documents" "cp-controlcenter-clone-ingress" {
+    content = templatefile("${path.module}/apps/ingress/cp-controlcenter-clone-ingress.yaml", {
+      aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
+      cp_controlcenter_clone_fqdn = "${local.cp_cc_clone_fqdn}",
+      aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
+      }
+    )
+}
+
+resource "kubectl_manifest" "cp-controlcenter-clone-ingress" {
+  # for_each  = data.kubectl_file_documents.cp-ingress.manifests
+  yaml_body = data.kubectl_file_documents.cp-controlcenter-clone-ingress.content
   depends_on = [
     helm_release.confluent-operator,
     kubectl_manifest.cp-cc-restclass,

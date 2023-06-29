@@ -62,12 +62,13 @@ resource "confluent_connector" "BigQuerySink" {
     "project" : var.gcp_project_id,
     "datasets" : split("/", var.gcp_bigtable_dataset)[3],
     "input.data.format" : "JSON",
-    "autoCreateTables" : "true"
-    "sanitizeTopics" : "true"
-    "autoUpdateSchemas" : "true"
-    "sanitizeFieldNames" : "true"
-    "tasks.max" : "1"
-    "topics" : var.gcp_cc_bq_sink_topic
+    "autoCreateTables" : true,
+    "sanitizeTopics" : true,
+    "autoUpdateSchemas" : true,
+    "sanitizeFieldNames" : true,
+    "tasks.max" : "1",
+    "topics" : "aws-customer-propensity-score",
+    "partitioning.type": "NONE"
   }
 
   depends_on = [

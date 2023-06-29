@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: elastic-system
+  name: elastic-kibana-ingress
+  annotations:
+    alb.ingress.kubernetes.io/load-balancer-name: cp-ingress
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: cp-frontend
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/certificate-arn: "${aws_acm_cert_arn}"
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-1-2017-01
+    alb.ingress.kubernetes.io/subnets: "${aws_eks_vpc_public_subnet}"
+spec:
+  ingressClassName: alb
+  rules:
+  - host: "${elastic_kibana_fqdn}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ops-elasticsearch-kb-http
+            port:
+              number: 5601

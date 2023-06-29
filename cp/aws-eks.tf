@@ -114,9 +114,9 @@ resource "aws_eks_node_group" "default-node-pool" {
   disk_size       = 200
   instance_types  = ["t3.xlarge"]
   scaling_config {
-    desired_size = 2
-    max_size     = 3
-    min_size     = 2
+    desired_size = 3
+    max_size     = 4
+    min_size     = 3
   }
   update_config {
     max_unavailable = 1

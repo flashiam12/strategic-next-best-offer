@@ -3,6 +3,7 @@ locals {
   cp_cc_clone_fqdn = "cp-controlcenter-clone.hsbc-ops.selabs.net"
   cp_connect_fqdn = "cp-connect.hsbc-ops.selabs.net"
   cp_ksql_fqdn = "cp-ksqldb.hsbc-ops.selabs.net"
+  cp_ksql_clone_fqdn = "cp-ksqldb-clone.hsbc-ops.selabs.net"
   cp_sr_fqdn = "cp-schema-registry.hsbc-ops.selabs.net"
   # eks_vpc_public_subnet = module.ops-vpc.public_subnets
   eks_vpc_public_subnet = join(", ", [for s in module.ops-vpc.public_subnets : s])
@@ -64,6 +65,23 @@ data "kubectl_file_documents" "cp-ksql" {
 
 resource "kubectl_manifest" "cp-ksql" {
   for_each  = data.kubectl_file_documents.cp-ksql.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.confluent-operator,
+    kubernetes_secret.ca-pair-sslcerts,
+    kubernetes_secret.credential,
+    kubernetes_secret.rest-credential,
+    kubernetes_secret.password-encoder-secret,
+    kubectl_manifest.cp-cluster
+  ]
+}
+
+data "kubectl_file_documents" "cp-ksql-clone" {
+    content = file("${path.module}/apps/cp-ksql-clone.yaml")
+}
+
+resource "kubectl_manifest" "cp-ksql-clone" {
+  for_each  = data.kubectl_file_documents.cp-ksql-clone.manifests
   yaml_body = each.value
   depends_on = [
     helm_release.confluent-operator,

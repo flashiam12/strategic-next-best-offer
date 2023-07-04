@@ -1,7 +1,7 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
-  name: connect
+  name: connect-clone
   namespace: confluent
 spec:
   replicas: 1
@@ -22,7 +22,7 @@ spec:
             owner: debezium
             version: 2.1.4
           - name: kafka-connect-jdbc
-            owner: confluentinc
+            owner: confluentinc 
             version: 10.7.0
   dependencies:
     kafka:
@@ -33,7 +33,16 @@ spec:
           secretRef: cloud-plain
       tls:
         enabled: true
-        ignoreTrustStoreConfig: true 
+        ignoreTrustStoreConfig: true
+    schemaRegistry:
+      url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+      authentication:
+        type: basic         
+        basic:
+          secretRef: cloud-sr-basic
+      tls:
+        enabled: true
+        ignoreTrustStoreConfig: true            
   podTemplate:
     podSecurityContext:
       fsGroup: 1000
@@ -42,8 +51,8 @@ spec:
   externalAccess:
     type: nodePort
     nodePort:
-      host: cp-connect.hsbc-ops.selabs.net
-      nodePortOffset: 30605
+      host: cp-connect-clone.hsbc-ops.selabs.net
+      nodePortOffset: 30607
   configOverrides:
     server:
-      - advertised.listeners=cp-connect.hsbc-ops.selabs.net 
+      - advertised.listeners=cp-connect-clone.hsbc-ops.selabs.net 

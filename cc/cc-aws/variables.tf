@@ -37,7 +37,10 @@ variable "aws_cc_topics" {
   type = list(string)
   default = [
     "aws-next-best-offers-per-customer-activity-event",
-    "aws-customer-propensity-score"
+    "aws-customer-propensity-score",
+    "hsbc_ops_aws_clone.public.customer_activity",
+    "hsbc_ops_aws_clone.public.customer_registration",
+    "aws-enriched-customer-behaviour"
   ]
 }
 

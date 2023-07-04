@@ -32,7 +32,7 @@ spec:
       #   type: mtls
     connect:
     - name: connect
-      url: https://connect.confluent.svc.cluster.local:8083
+      url: https://connect-clone.confluent.svc.cluster.local:8083
       tls:
         enabled: true
       authentication:
@@ -43,6 +43,15 @@ spec:
         type: plain                
         jaasConfig:               
           secretRef: credential
+    # kafka:
+    #   bootstrapEndpoint: pkc-jn77q.us-west-2.aws.confluent.cloud:9092 
+    #   authentication:
+    #     type: plain
+    #     jaasConfig:
+    #       secretRef: cloud-plain
+    #   tls:
+    #     enabled: true
+    #     ignoreTrustStoreConfig: true 
   externalAccess:
     type: nodePort
     nodePort:

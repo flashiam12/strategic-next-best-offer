@@ -140,3 +140,31 @@ resource "aws_acm_certificate_validation" "default" {
   certificate_arn         = aws_acm_certificate.default.arn
   validation_record_fqdns = [for record in aws_route53_record.cert : record.fqdn]
 }
+
+resource "kubernetes_secret" "cloud-plain" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "cloud-plain"
+    namespace = "confluent"
+  }
+
+  data = {
+    "plain.txt" = "${file("./secrets/cloud-plain.txt")}"
+  }
+
+  type = "kubernetes.io/generic"
+}
+
+resource "kubernetes_secret" "cloud-sr-basic" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "cloud-sr-basic"
+    namespace = "confluent"
+  }
+
+  data = {
+    "basic.txt" = "${file("./secrets/cloud-aws-sr-basic.txt")}"
+  }
+
+  type = "kubernetes.io/generic"
+}

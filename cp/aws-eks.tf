@@ -82,7 +82,9 @@ resource "aws_eks_addon" "csi-driver" {
   cluster_name = module.eks.cluster_name
   addon_name   = "aws-ebs-csi-driver"
   resolve_conflicts_on_update = "PRESERVE"
-  depends_on = [ aws_eks_node_group.default-node-pool, aws_eks_node_group.ha-node-pool ]
+  depends_on = [ aws_eks_node_group.default-node-pool, 
+                #  aws_eks_node_group.ha-node-pool 
+               ]
 }
 
 resource "aws_eks_addon" "vpc-cni" {
@@ -112,11 +114,11 @@ resource "aws_eks_node_group" "default-node-pool" {
   node_role_arn   = aws_iam_role.node.arn
   subnet_ids      = module.ops-vpc.private_subnets
   disk_size       = 200
-  instance_types  = ["t3.xlarge"]
+  instance_types  = ["m6i.4xlarge"]
   scaling_config {
-    desired_size = 3
-    max_size     = 4
-    min_size     = 3
+    desired_size = 2
+    max_size     = 10
+    min_size     = 2
   }
   update_config {
     max_unavailable = 1
@@ -133,34 +135,34 @@ resource "aws_eks_node_group" "default-node-pool" {
   ]
 }
 
-resource "aws_eks_node_group" "ha-node-pool" {
-  cluster_name    = module.eks.cluster_name
-  ami_type        = "AL2_x86_64"
-  version         = "1.23"
-  node_group_name = "hsbc-ops-ha-node-pool"
-  node_role_arn   = aws_iam_role.node.arn
-  subnet_ids      = module.ops-vpc.private_subnets
-  disk_size       = 200
-  instance_types  = ["t3.large"]
-  scaling_config {
-    desired_size = 1
-    max_size     = 4
-    min_size     = 1
-  }
-  update_config {
-    max_unavailable = 1
-  }
+# resource "aws_eks_node_group" "ha-node-pool" {
+#   cluster_name    = module.eks.cluster_name
+#   ami_type        = "AL2_x86_64"
+#   version         = "1.23"
+#   node_group_name = "hsbc-ops-ha-node-pool"
+#   node_role_arn   = aws_iam_role.node.arn
+#   subnet_ids      = module.ops-vpc.private_subnets
+#   disk_size       = 200
+#   instance_types  = ["m6i.8xlarge"]
+#   scaling_config {
+#     desired_size = 1
+#     max_size     = 4
+#     min_size     = 1
+#   }
+#   update_config {
+#     max_unavailable = 1
+#   }
 
-  remote_access {
-    ec2_ssh_key = "vibin_checkride"
-    source_security_group_ids = [module.ops-vpc.default_security_group_id]
-  }
-  depends_on = [ 
-    aws_eks_addon.vpc-cni,
-    aws_eks_addon.kube-proxy,
-    aws_eks_addon.coredns
-  ]
-}
+#   remote_access {
+#     ec2_ssh_key = "vibin_checkride"
+#     source_security_group_ids = [module.ops-vpc.default_security_group_id]
+#   }
+#   depends_on = [ 
+#     aws_eks_addon.vpc-cni,
+#     aws_eks_addon.kube-proxy,
+#     aws_eks_addon.coredns
+#   ]
+# }
 
 
 resource "helm_release" "cert-manager" {

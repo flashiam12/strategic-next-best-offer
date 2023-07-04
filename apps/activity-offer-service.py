@@ -10,6 +10,8 @@ def get_data(dataset:List[dict]):
         data = dataset[randint(0, len(dataset)-1)]
         data["offer_id"] = fake.lexify()
         data["offer_name"] = fake.bs()
+        data['fico_min'] = randint(110, 890)
+        data['fico_max'] = randint(data['fico_min'], 900)
 
         return data
 

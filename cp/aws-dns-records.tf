@@ -52,6 +52,18 @@ resource "aws_route53_record" "cp-connect-ingress" {
   }
 }
 
+resource "aws_route53_record" "cp-connect-clone-ingress" {
+  allow_overwrite = true
+  name            = local.cp_connect_clone_fqdn
+  type            = "A"
+  zone_id         = data.aws_route53_zone.default.zone_id
+  alias {
+    name                   = data.aws_lb.cp-ingress.dns_name
+    zone_id                = data.aws_lb.cp-ingress.zone_id
+    evaluate_target_health = true
+  }
+}
+
 resource "aws_route53_record" "cp-sr-ingress" {
   allow_overwrite = true
   name            = local.cp_sr_fqdn

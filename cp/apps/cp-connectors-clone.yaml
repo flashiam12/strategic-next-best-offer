@@ -1,0 +1,44 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: ops-db-cdc-aws-clone
+  namespace: confluent
+spec:
+  class: "io.debezium.connector.postgresql.PostgresConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect-clone
+  configs:
+    name: ops-db-cdc-aws-clone
+    connector.class: io.debezium.connector.postgresql.PostgresConnector
+    plugin.name: pgoutput
+    topic.prefix: hsbc_ops_aws_clone
+    kafka.auth.mode: KAFKA_API_KEY
+    kafka.api.key: ${file:/mnt/secrets/connector-secrets/connect.txt:username}
+    kafka.api.secret : ${file:/mnt/secrets/connector-secrets/connect.txt:password}
+    tasks.max: "4"
+    database.hostname: hsbc-ops-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com
+    database.port: "5432"
+    database.user: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_user}
+    database.password: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_pass}
+    database.dbname: hsbcOpsDB
+    database.server.name: hsbc-ops-db
+    output.data.format: JSON
+    after.state.only: "false"
+    slot.name: "debezium_aws_clone"
+    decimal.handling.mode: double
+    snapshot.mode: initial
+    transforms: ExtractField
+    transforms.ExtractField.field: after
+    transforms.ExtractField.type: org.apache.kafka.connect.transforms.ExtractField$Value
+    value.converter: io.confluent.connect.json.JsonSchemaConverter
+    key.converter: io.confluent.connect.json.JsonSchemaConverter
+    # schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    key.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    value.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    key.converter.use.latest.version: "true"
+    value.converter.use.latest.version: "true"
+    key.converter.basic.auth.credentials.source: "USER_INFO"
+    value.converter.basic.auth.credentials.source: "USER_INFO"
+    key.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+    value.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}

@@ -2,6 +2,7 @@ locals {
   cp_cc_fqdn = "cp-controlcenter.hsbc-ops.selabs.net"
   cp_cc_clone_fqdn = "cp-controlcenter-clone.hsbc-ops.selabs.net"
   cp_connect_fqdn = "cp-connect.hsbc-ops.selabs.net"
+  cp_connect_clone_fqdn = "cp-connect-clone.hsbc-ops.selabs.net"
   cp_ksql_fqdn = "cp-ksqldb.hsbc-ops.selabs.net"
   cp_ksql_clone_fqdn = "cp-ksqldb-clone.hsbc-ops.selabs.net"
   cp_sr_fqdn = "cp-schema-registry.hsbc-ops.selabs.net"
@@ -42,6 +43,18 @@ resource "kubectl_manifest" "cp-connectors" {
   ]
 }
 
+data "kubectl_file_documents" "cp-connectors-clone" {
+    content = file("${path.module}/apps/cp-connectors-clone.yaml")
+}
+
+resource "kubectl_manifest" "cp-connectors-clone" {
+  for_each  = data.kubectl_file_documents.cp-connectors-clone.manifests
+  yaml_body = each.value
+  depends_on = [
+    kubectl_manifest.cp-connect
+  ]
+}
+
 data "kubectl_file_documents" "cp-connect" {
     content = file("${path.module}/apps/cp-connect.yaml")
 }
@@ -56,6 +69,24 @@ resource "kubectl_manifest" "cp-connect" {
     kubernetes_secret.rest-credential,
     kubernetes_secret.password-encoder-secret,
     kubectl_manifest.cp-cluster
+  ]
+}
+
+data "kubectl_file_documents" "cp-connect-clone" {
+    content = file("${path.module}/apps/cp-connect-clone.yaml")
+}
+
+resource "kubectl_manifest" "cp-connect-clone" {
+  for_each  = data.kubectl_file_documents.cp-connect-clone.manifests
+  yaml_body = each.value
+  depends_on = [
+    helm_release.confluent-operator,
+    kubernetes_secret.ca-pair-sslcerts,
+    kubernetes_secret.credential,
+    kubernetes_secret.rest-credential,
+    kubernetes_secret.password-encoder-secret,
+    kubernetes_secret.cloud-plain
+    # kubectl_manifest.cp-cluster
   ]
 }
 
@@ -238,6 +269,28 @@ resource "kubectl_manifest" "cp-connect-ingress" {
     kubernetes_secret.ccloud-tls-certs,
     kubernetes_secret.credential,
     kubectl_manifest.cp-connect
+  ]
+}
+
+data "kubectl_file_documents" "cp-connect-clone-ingress" {
+    content = templatefile("${path.module}/apps/ingress/cp-connect-ingress-clone.yaml", {
+      aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
+      cp_connect_clone_fqdn = "${local.cp_connect_clone_fqdn}",
+      aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
+      }
+    )
+}
+
+resource "kubectl_manifest" "cp-connect-clone-ingress" {
+  # for_each  = data.kubectl_file_documents.cp-ingress.manifests
+  yaml_body = data.kubectl_file_documents.cp-connect-clone-ingress.content
+  depends_on = [
+    helm_release.confluent-operator,
+    kubectl_manifest.cp-cc-restclass,
+    kubernetes_secret.jaasconfig-ccloud,
+    kubernetes_secret.ccloud-tls-certs,
+    kubernetes_secret.credential,
+    kubectl_manifest.cp-connect-clone
   ]
 }
 

@@ -8,16 +8,15 @@ from faker import Faker
 def get_data(dataset:List[dict]):
         fake = Faker()
         ranges = {
-             "0.10":"0.50",
-             "0.50":"0.70",
-             "0.70":"0.99"
-        }
+                    0.10:0.50,
+                    0.50:0.70,
+                    0.70:0.99
+                }
         data = dataset[randint(0, len(dataset)-1)]
         data["offer_id"] = fake.lexify()
         data["offer_name"] = fake.bs()
         data['prop_min'] = choice(list(ranges.keys()))
         data['prop_max'] = ranges[data["prop_min"]]
-
         return data
 
 def generator():

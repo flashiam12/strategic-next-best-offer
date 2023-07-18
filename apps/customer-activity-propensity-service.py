@@ -20,11 +20,15 @@ def read_ccloud_config(config_file):
     return conf
 
 def get_data(kinesis_client, stream_name):
-    props = read_ccloud_config("client.properties")
+    # props = read_ccloud_config("client.properties")
+    props = {}
     props["group.id"] = "customer-activity-scoring"
     props["auto.offset.reset"] = "earliest"
     props["sasl.username"] = os.environ.get("KAFKA_SASL_USERNAME")
     props["sasl.password"] = os.environ.get("KAFKA_SASL_PASSWORD")
+    props["bootstrap.servers"] = os.environ.get("KAFKA_BOOTSTRAP_URL")
+    props["security.protocol"] = "SASL_SSL"
+    props["sasl.mechanisms"] = "PLAIN"
     consumer = Consumer(props)
     consumer.subscribe([os.environ.get("KAFKA_TOPIC")])
 

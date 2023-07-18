@@ -15,7 +15,7 @@ def get_data(dataset:List[dict]):
         data = dataset[randint(0, len(dataset)-1)]
         data["offer_id"] = fake.lexify()
         data["offer_name"] = fake.bs()
-        data['prop_min'] = int(choice(ranges.keys()))
+        data['prop_min'] = int(choice(list(ranges.keys())))
         data['prop_max'] = int(ranges[data["prop_min"]])
 
         return data

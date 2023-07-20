@@ -11,7 +11,7 @@ def main():
         # for x in range(0, 10):
             print("Creating dataset for {} time".format(i))
             fake = Faker()
-            customer = db.query(CustomerRegistration).filter(CustomerRegistration.CUSTOMER_ID==randint(0, rows-1)).one()
+            customer = db.query(CustomerRegistration).filter(CustomerRegistration.CUSTOMER_ID==randint(1, rows)).one()
             customer_registration = CustomerActivity(
                 IP_ADDRESS = fake.ipv4(),
                 ACTIVITY_TYPE = choice(["branch_visit", "deposit", "web_open", "mobile_open", "new_account"]),

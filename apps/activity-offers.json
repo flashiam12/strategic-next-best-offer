@@ -3,30 +3,35 @@
         "activity":"branch_visit",
         "offer_id":"",
         "offer_name":"",
-        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg"
-    },
-    {
-        "activity":"deposit",
-        "offer_id":"",
-        "offer_name":"",
-        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg"
+        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg",
+        "next_activity": "web_open"
     },
     {
         "activity":"web_open",
         "offer_id":"",
         "offer_name":"",
-        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg"
+        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg",
+        "next_activity": "mobile_open"
     },
     {
         "activity":"mobile_open",
         "offer_id":"",
         "offer_name":"",
-        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg"
+        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg",
+        "next_activity": "new_account"
     },
     {
         "activity":"new_account",
         "offer_id":"",
         "offer_name":"",
-        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg"
+        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg",
+        "next_activity": "deposit"
+    },
+    {
+        "activity":"deposit",
+        "offer_id":"",
+        "offer_name":"",
+        "offer_url":"https://images.hdqwalls.com/wallpapers/baby-yoda-cute-5k-ef.jpg",
+        "next_activity": "apply_loan"
     }
 ]

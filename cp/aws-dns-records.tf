@@ -16,17 +16,17 @@ resource "aws_route53_record" "cp-controlcenter-ingress" {
   }
 }
 
-resource "aws_route53_record" "cp-controlcenter-clone-ingress" {
-  allow_overwrite = true
-  name            = local.cp_cc_clone_fqdn
-  type            = "A"
-  zone_id         = data.aws_route53_zone.default.zone_id
-  alias {
-    name                   = data.aws_lb.cp-ingress.dns_name
-    zone_id                = data.aws_lb.cp-ingress.zone_id
-    evaluate_target_health = true
-  }
-}
+# resource "aws_route53_record" "cp-controlcenter-clone-ingress" {
+#   allow_overwrite = true
+#   name            = local.cp_cc_clone_fqdn
+#   type            = "A"
+#   zone_id         = data.aws_route53_zone.default.zone_id
+#   alias {
+#     name                   = data.aws_lb.cp-ingress.dns_name
+#     zone_id                = data.aws_lb.cp-ingress.zone_id
+#     evaluate_target_health = true
+#   }
+# }
 
 resource "aws_route53_record" "cp-ksql-ingress" {
   allow_overwrite = true
@@ -136,14 +136,14 @@ resource "aws_route53_record" "cp-kafka-broker-2" {
   }
 }
 
-resource "aws_route53_record" "cp-ksqldb-bootstrap" {
-  allow_overwrite = true
-  name            = local.cp_ksql_clone_fqdn
-  type            = "A"
-  zone_id         = data.aws_route53_zone.default.zone_id
-  alias {
-    name                   = data.aws_lb.cp-ksqldb-bootstrap.dns_name
-    zone_id                = data.aws_lb.cp-ksqldb-bootstrap.zone_id
-    evaluate_target_health = true
-  }
-}
+# resource "aws_route53_record" "cp-ksqldb-bootstrap" {
+#   allow_overwrite = true
+#   name            = local.cp_ksql_clone_fqdn
+#   type            = "A"
+#   zone_id         = data.aws_route53_zone.default.zone_id
+#   alias {
+#     name                   = data.aws_lb.cp-ksqldb-bootstrap.dns_name
+#     zone_id                = data.aws_lb.cp-ksqldb-bootstrap.zone_id
+#     evaluate_target_health = true
+#   }
+# }

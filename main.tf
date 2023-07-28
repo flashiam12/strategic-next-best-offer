@@ -47,12 +47,16 @@ module "devops" {
   aws_region = var.aws_region
   aws_api_key = var.aws_api_key
   aws_api_secret = var.aws_secret_key
-  aws_trigger_ci = false
+  aws_trigger_ci = true
   aws_rds_db_name = module.external.aws_rds_db_name
   aws_rds_db_pass = module.external.aws_rds_db_password
   aws_rds_db_uri = module.external.aws_rds_db_address
   aws_rds_db_user = module.external.aws_rds_db_username
   gcp_credentials_path = "secrets/service-account.json"
+  confluent_kafka_api_key = module.cc.aws_cc_api_key
+  confluent_kafka_api_secret = module.cc.aws_cc_api_secret
+  confluent_sr_api_key = module.cc.confluent_sr_api_key
+  confluent_sr_api_secret = module.cc.confluent_sr_api_secret
 }
 
 module "dashboard" {

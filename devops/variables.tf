@@ -37,3 +37,19 @@ variable "aws_rds_db_name" {
 variable "gcp_credentials_path" {
   type = string
 }
+
+variable "confluent_kafka_api_key" {
+  type = string
+}
+
+variable "confluent_kafka_api_secret" {
+  type = string
+}
+
+variable "confluent_sr_api_key" {
+  type = string
+}
+
+variable "confluent_sr_api_secret" {
+  type = string
+}

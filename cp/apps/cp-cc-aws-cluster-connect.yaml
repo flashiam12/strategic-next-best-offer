@@ -44,3 +44,5 @@ spec:
       namespace: confluent
   mirrorTopics:
     - name: cp-enriched-customer-behaviour
+    - name: hsbc_ops_cp.public.customer_activity
+    - name: hsbc_ops_cp.public.customer_registration

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: ubuntu-kafka
+  name: ubuntu-kafka
+  namespace: confluent
+spec:
+  containers:
+  - command:
+    - sleep
+    - "604800"
+    image: ubuntu:focal
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+    volumeMounts:
+    - mountPath: /var/data
+      name: data
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: data0-kafka-2

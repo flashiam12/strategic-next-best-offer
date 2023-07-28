@@ -45,8 +45,8 @@ module "db" {
   major_engine_version = "14"         # DB option group
   instance_class       = "db.t3.small"
 
-  allocated_storage     = 20
-  max_allocated_storage = 100
+  allocated_storage     = 200
+  max_allocated_storage = 512
 
   # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
   # "Error creating DB Instance: InvalidParameterValue: MasterUsername

@@ -9,11 +9,17 @@ spec:
     type: mtls   
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka-bootstrap-lb.confluent.svc.cluster.local:9092
+      bootstrapEndpoint: kafka-0.kafka.confluent.svc.cluster.local:9092
       authentication:
         type: plain                
         jaasConfig:               
           secretRef: credential
+    schemaRegistry:
+      url: https://schemaregistry.confluent.svc.cluster.local:8081
+      tls:
+        enabled: true
+      authentication:
+        type: mtls
   image:
     application: confluentinc/cp-ksqldb-server:7.3.0
     init: confluentinc/confluent-init-container:2.4.0

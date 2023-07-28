@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"labels":{"app":"ubuntu"},"name":"ubuntu","namespace":"confluent"},"spec":{"containers":[{"command":["sleep","604800"],"image":"ubuntu:focal","imagePullPolicy":"IfNotPresent","name":"ubuntu","volumeMounts":[{"mountPath":"/var/data","name":"data"}]}],"restartPolicy":"Always","volumes":[{"name":"data","persistentVolumeClaim":{"claimName":"connector-pvc"}}]}}
+    kubernetes.io/psp: eks.privileged
+  creationTimestamp: "2023-07-04T09:46:54Z"
+  labels:
+    app: ubuntu
+  name: ubuntu
+  namespace: confluent
+  resourceVersion: "6061519"
+  uid: a4185f89-74ce-4936-b63f-2082b3e42ec8
+spec:
+  containers:
+  - command:
+    - sleep
+    - "604800"
+    image: ubuntu:focal
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/data
+      name: data
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-5k5bj
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: ip-172-20-1-12.us-west-2.compute.internal
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: data0-kafka-2
+  - name: kube-api-access-5k5bj
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-07-04T09:46:54Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-07-04T09:46:58Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-07-04T09:46:58Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-07-04T09:46:54Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://b2850abd481636f54f516c714db301aed367dbe475840cfeebc183bed383965c
+    image: ubuntu:focal
+    imageID: docker-pullable://ubuntu@sha256:c9820a44b950956a790c354700c1166a7ec648bc0d215fa438d3a339812f1d01
+    lastState: {}
+    name: ubuntu
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-07-04T09:46:57Z"
+  hostIP: 172.20.1.12
+  phase: Running
+  podIP: 172.20.1.5
+  podIPs:
+  - ip: 172.20.1.5
+  qosClass: BestEffort
+  startTime: "2023-07-04T09:46:54Z"

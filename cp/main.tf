@@ -99,21 +99,21 @@ module "bastion_host" {
 data "aws_lb" "cp-ingress" {
   name = "cp-ingress"
   depends_on = [ 
-    kubectl_manifest.cp-controlcenter-ingress,
-    kubectl_manifest.cp-ksql-ingress,
-    kubectl_manifest.cp-sr-ingress,
-    kubectl_manifest.cp-connect-ingress
+    # kubectl_manifest.cp-controlcenter-ingress,
+    # kubectl_manifest.cp-ksql-ingress,
+    # kubectl_manifest.cp-sr-ingress,
+    # kubectl_manifest.cp-connect-ingress
    ]
 }
 
-data "aws_lb" "cp-ksqldb-bootstrap"{
-  tags = {
-    "service.k8s.aws/stack" = "confluent/ksqldb-clone-bootstrap-lb"
-  }
-  depends_on = [ 
-    kubectl_manifest.cp-ksql-clone
-  ]
-}
+# data "aws_lb" "cp-ksqldb-bootstrap"{
+#   tags = {
+#     "service.k8s.aws/stack" = "confluent/ksqldb-clone-bootstrap-lb"
+#   }
+#   depends_on = [ 
+#     kubectl_manifest.cp-ksql-clone
+#   ]
+# }
 
 data "aws_lb" "cp-kafka-1" {
   tags = {

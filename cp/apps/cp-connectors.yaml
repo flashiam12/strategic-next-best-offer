@@ -26,7 +26,14 @@ spec:
     output.data.format: JSON
     after.state.only: "false"
     decimal.handling.mode: double
+    # slot.name: "debezium_cp"
     snapshot.mode: initial
     transforms: ExtractField
     transforms.ExtractField.field: after
     transforms.ExtractField.type: org.apache.kafka.connect.transforms.ExtractField$Value
+    value.converter: io.confluent.connect.json.JsonSchemaConverter
+    key.converter: io.confluent.connect.json.JsonSchemaConverter
+    key.converter.schema.registry.url: https://cp-schema-registry.hsbc-ops.selabs.net
+    value.converter.schema.registry.url: https://cp-schema-registry.hsbc-ops.selabs.net
+    key.converter.use.latest.version: "true"
+    value.converter.use.latest.version: "true"

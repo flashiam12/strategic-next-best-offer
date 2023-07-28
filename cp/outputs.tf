@@ -16,3 +16,6 @@ output "aws_public_subnet" {
 # output "aws_cp_ingress_manifest" {
 #   value = data.kubectl_file_documents.cp-ingress.content
 # }
+output "aws_ksql_tls_cert" {
+  value = data.kubernetes_secret.ksql-cert.data
+}

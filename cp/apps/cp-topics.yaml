@@ -8,3 +8,25 @@ spec:
   partitionCount: 6
   kafkaRestClassRef:
     name: krc-cfk
+# ---
+# apiVersion: platform.confluent.io/v1beta1
+# kind: KafkaTopic
+# metadata:
+#   name: hsbc_ops_cp.public.customer_activity
+#   namespace: confluent
+# spec:
+#   replicas: 3
+#   partitionCount: 6
+#   kafkaRestClassRef:
+#     name: krc-cfk
+# ---
+# apiVersion: platform.confluent.io/v1beta1
+# kind: KafkaTopic
+# metadata:
+#   name: hsbc_ops_cp.public.customer_registration
+#   namespace: confluent
+# spec:
+#   replicas: 3
+#   partitionCount: 6
+#   kafkaRestClassRef:
+#     name: krc-cfk

@@ -34,3 +34,9 @@ output "gcp_cc_api_key" {
 output "gcp_cc_api_secret" {
   value = module.gcp-cc.gcp_cc_admin_api_secret
 }
+output "confluent_sr_api_key" {
+  value = confluent_api_key.env-manager-schema-registry-api-key.id
+}
+output "confluent_sr_api_secret" {
+  value = confluent_api_key.env-manager-schema-registry-api-key.secret
+}

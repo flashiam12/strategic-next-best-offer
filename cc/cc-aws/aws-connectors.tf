@@ -57,7 +57,7 @@ resource "confluent_connector" "S3Sink" {
     "name" : "hsbc-aws-next-best-offer-per-activity-bucket",
     "connector.class": "S3_SINK",
     "kafka.auth.mode": "KAFKA_API_KEY",
-    "input.data.format": "JSON",
+    "input.data.format": "JSON_SR",
     "output.data.format": "JSON",
     "compression.codec": "JSON - gzip",
     "s3.compression.level": "6",
@@ -65,7 +65,9 @@ resource "confluent_connector" "S3Sink" {
     "time.interval" : "HOURLY",
     "flush.size": "1000",
     "tasks.max" : "1",
-    "topics": "aws-next-best-offers-per-customer-activity-event"
+    "topics": "aws-next-best-offers-per-customer-activity-event",
+    # "store.kafka.keys": true,
+    "schema.compatibility": "FULL"
   }
 
   depends_on = [

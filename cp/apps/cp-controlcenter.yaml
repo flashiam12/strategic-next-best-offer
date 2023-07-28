@@ -43,6 +43,10 @@ spec:
         type: plain                
         jaasConfig:               
           secretRef: credential
+    zookeeper: 
+    - name: zookeeper
+      url: http://zookeeper.confluent.svc.cluster.local:2182
+
   externalAccess:
     type: nodePort
     nodePort:

@@ -9,6 +9,9 @@ resource "kubernetes_secret" "default" {
     DB_PASS = var.aws_rds_db_pass
     DB_URI = var.aws_rds_db_uri
     DB_NAME = var.aws_rds_db_name
+    KAFKA_SASL_USERNAME = var.confluent_kafka_api_key
+    KAFKA_SASL_PASSWORD = var.confluent_kafka_api_secret
+    SR_AUTH = "${var.confluent_sr_api_key}:${var.confluent_sr_api_secret}"
   }
 }
 

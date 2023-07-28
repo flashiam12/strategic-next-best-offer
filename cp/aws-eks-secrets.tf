@@ -168,3 +168,61 @@ resource "kubernetes_secret" "cloud-sr-basic" {
 
   type = "kubernetes.io/generic"
 }
+
+data "kubernetes_secret" "ksql-cert" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "ksqldb-generated-jks"
+    namespace = "confluent"
+  }
+}
+
+resource "local_file" "ksql_tls_key" {
+  content  = data.kubernetes_secret.ksql-cert.data["tls.key"]
+  filename = "secrets/cp-ksql-certs/tls.key"
+}
+
+resource "local_file" "ksql_tls_crt" {
+  content  = data.kubernetes_secret.ksql-cert.data["tls.crt"]
+  filename = "secrets/cp-ksql-certs/tls.crt"
+}
+
+resource "local_file" "ksql_tls_ca" {
+  content  = data.kubernetes_secret.ksql-cert.data["ca.crt"]
+  filename = "secrets/cp-ksql-certs/ca.crt"
+}
+
+
+
+module "ksql-acm" {
+  source              = "clouddrove/acm/aws"
+  version             = "1.3.0"
+  name                = "ksql-cert"
+  environment         = "ops"
+  label_order         = ["name","environment"]
+  private_key         = local_file.ksql_tls_key.filename
+  certificate_body    = local_file.ksql_tls_crt.filename
+  certificate_chain   = local_file.ksql_tls_ca.filename
+  import_certificate  = true
+  depends_on = [ 
+    local_file.ksql_tls_ca, 
+    local_file.ksql_tls_crt,
+    local_file.ksql_tls_key
+   ]
+}
+
+# resource "kubernetes-secrets" "ksql-tls-certs" {
+#   provider = kubernetes.kubernetes-raw
+#   metadata {
+#     name = "ksql-tls-certs"
+#     namespace = "confluent"
+#   }
+
+#   data = {
+#     "fullchain.pem" = ""
+#     "cacerts.pem" = ""
+#     "privkey.pem" = ""
+#   }
+
+#   type = "kubernetes.io/generic"
+# }

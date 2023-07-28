@@ -51,7 +51,7 @@ resource "kubectl_manifest" "cp-connectors-clone" {
   for_each  = data.kubectl_file_documents.cp-connectors-clone.manifests
   yaml_body = each.value
   depends_on = [
-    kubectl_manifest.cp-connect
+    kubectl_manifest.cp-connect-clone
   ]
 }
 
@@ -107,22 +107,22 @@ resource "kubectl_manifest" "cp-ksql" {
   ]
 }
 
-data "kubectl_file_documents" "cp-ksql-clone" {
-    content = file("${path.module}/apps/cp-ksql-clone.yaml")
-}
+# data "kubectl_file_documents" "cp-ksql-clone" {
+#     content = file("${path.module}/apps/cp-ksql-clone.yaml")
+# }
 
-resource "kubectl_manifest" "cp-ksql-clone" {
-  for_each  = data.kubectl_file_documents.cp-ksql-clone.manifests
-  yaml_body = each.value
-  depends_on = [
-    helm_release.confluent-operator,
-    kubernetes_secret.ca-pair-sslcerts,
-    kubernetes_secret.credential,
-    kubernetes_secret.rest-credential,
-    kubernetes_secret.password-encoder-secret,
-    kubectl_manifest.cp-cluster
-  ]
-}
+# resource "kubectl_manifest" "cp-ksql-clone" {
+#   for_each  = data.kubectl_file_documents.cp-ksql-clone.manifests
+#   yaml_body = each.value
+#   depends_on = [
+#     helm_release.confluent-operator,
+#     kubernetes_secret.ca-pair-sslcerts,
+#     kubernetes_secret.credential,
+#     kubernetes_secret.rest-credential,
+#     kubernetes_secret.password-encoder-secret,
+#     kubectl_manifest.cp-cluster
+#   ]
+# }
 
 data "kubectl_file_documents" "cp-controlcenter" {
     content = file("${path.module}/apps/cp-controlcenter.yaml")
@@ -139,28 +139,28 @@ resource "kubectl_manifest" "cp-controlcenter" {
     kubernetes_secret.password-encoder-secret,
     kubectl_manifest.cp-cluster,
     kubectl_manifest.cp-connect,
-    kubectl_manifest.cp-ksql
+    # kubectl_manifest.cp-ksql
   ]
 }
 
-data "kubectl_file_documents" "cp-controlcenter-clone" {
-    content = file("${path.module}/apps/cp-controlcenter-clone.yaml")
-}
+# data "kubectl_file_documents" "cp-controlcenter-clone" {
+#     content = file("${path.module}/apps/cp-controlcenter-clone.yaml")
+# }
 
-resource "kubectl_manifest" "cp-controlcenter-clone" {
-  for_each  = data.kubectl_file_documents.cp-controlcenter-clone.manifests
-  yaml_body = each.value
-  depends_on = [
-    helm_release.confluent-operator,
-    kubernetes_secret.ca-pair-sslcerts,
-    kubernetes_secret.credential,
-    kubernetes_secret.rest-credential,
-    kubernetes_secret.password-encoder-secret,
-    kubectl_manifest.cp-cluster,
-    kubectl_manifest.cp-connect,
-    kubectl_manifest.cp-ksql
-  ]
-}
+# resource "kubectl_manifest" "cp-controlcenter-clone" {
+#   for_each  = data.kubectl_file_documents.cp-controlcenter-clone.manifests
+#   yaml_body = each.value
+#   depends_on = [
+#     helm_release.confluent-operator,
+#     kubernetes_secret.ca-pair-sslcerts,
+#     kubernetes_secret.credential,
+#     kubernetes_secret.rest-credential,
+#     kubernetes_secret.password-encoder-secret,
+#     kubectl_manifest.cp-cluster,
+#     kubectl_manifest.cp-connect,
+#     kubectl_manifest.cp-ksql
+#   ]
+# }
 
 data "kubectl_file_documents" "cp-cc-restclass" {
     content = file("${path.module}/apps/cp-cc-restclass.yaml")
@@ -220,7 +220,7 @@ resource "kubectl_manifest" "cp-controlcenter-ingress" {
   yaml_body = data.kubectl_file_documents.cp-controlcenter-ingress.content
   depends_on = [
     helm_release.confluent-operator,
-    kubectl_manifest.cp-cc-restclass,
+    # kubectl_manifest.cp-cc-restclass,
     kubernetes_secret.jaasconfig-ccloud,
     kubernetes_secret.ccloud-tls-certs,
     kubernetes_secret.credential,
@@ -228,27 +228,27 @@ resource "kubectl_manifest" "cp-controlcenter-ingress" {
   ]
 }
 
-data "kubectl_file_documents" "cp-controlcenter-clone-ingress" {
-    content = templatefile("${path.module}/apps/ingress/cp-controlcenter-clone-ingress.yaml", {
-      aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
-      cp_controlcenter_clone_fqdn = "${local.cp_cc_clone_fqdn}",
-      aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
-      }
-    )
-}
+# data "kubectl_file_documents" "cp-controlcenter-clone-ingress" {
+#     content = templatefile("${path.module}/apps/ingress/cp-controlcenter-clone-ingress.yaml", {
+#       aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
+#       cp_controlcenter_clone_fqdn = "${local.cp_cc_clone_fqdn}",
+#       aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
+#       }
+#     )
+# }
 
-resource "kubectl_manifest" "cp-controlcenter-clone-ingress" {
-  # for_each  = data.kubectl_file_documents.cp-ingress.manifests
-  yaml_body = data.kubectl_file_documents.cp-controlcenter-clone-ingress.content
-  depends_on = [
-    helm_release.confluent-operator,
-    kubectl_manifest.cp-cc-restclass,
-    kubernetes_secret.jaasconfig-ccloud,
-    kubernetes_secret.ccloud-tls-certs,
-    kubernetes_secret.credential,
-    kubectl_manifest.cp-controlcenter
-  ]
-}
+# resource "kubectl_manifest" "cp-controlcenter-clone-ingress" {
+#   # for_each  = data.kubectl_file_documents.cp-ingress.manifests
+#   yaml_body = data.kubectl_file_documents.cp-controlcenter-clone-ingress.content
+#   depends_on = [
+#     helm_release.confluent-operator,
+#     kubectl_manifest.cp-cc-restclass,
+#     kubernetes_secret.jaasconfig-ccloud,
+#     kubernetes_secret.ccloud-tls-certs,
+#     kubernetes_secret.credential,
+#     kubectl_manifest.cp-controlcenter
+#   ]
+# }
 
 data "kubectl_file_documents" "cp-connect-ingress" {
     content = templatefile("${path.module}/apps/ingress/cp-connect-ingress.yaml", {
@@ -264,7 +264,7 @@ resource "kubectl_manifest" "cp-connect-ingress" {
   yaml_body = data.kubectl_file_documents.cp-connect-ingress.content
   depends_on = [
     helm_release.confluent-operator,
-    kubectl_manifest.cp-cc-restclass,
+    # kubectl_manifest.cp-cc-restclass,
     kubernetes_secret.jaasconfig-ccloud,
     kubernetes_secret.ccloud-tls-certs,
     kubernetes_secret.credential,
@@ -286,7 +286,7 @@ resource "kubectl_manifest" "cp-connect-clone-ingress" {
   yaml_body = data.kubectl_file_documents.cp-connect-clone-ingress.content
   depends_on = [
     helm_release.confluent-operator,
-    kubectl_manifest.cp-cc-restclass,
+    # kubectl_manifest.cp-cc-restclass,
     kubernetes_secret.jaasconfig-ccloud,
     kubernetes_secret.ccloud-tls-certs,
     kubernetes_secret.credential,
@@ -296,7 +296,7 @@ resource "kubectl_manifest" "cp-connect-clone-ingress" {
 
 data "kubectl_file_documents" "cp-ksql-ingress" {
     content = templatefile("${path.module}/apps/ingress/cp-ksql-ingress.yaml", {
-      aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
+      aws_acm_cert_arn = "${module.ksql-acm.arn}", 
       cp_ksql_fqdn = "${local.cp_ksql_fqdn}",
       aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
       }
@@ -330,7 +330,7 @@ resource "kubectl_manifest" "cp-sr-ingress" {
   yaml_body = data.kubectl_file_documents.cp-sr-ingress.content
   depends_on = [
     helm_release.confluent-operator,
-    kubectl_manifest.cp-cc-restclass,
+    # kubectl_manifest.cp-cc-restclass,
     kubernetes_secret.jaasconfig-ccloud,
     kubernetes_secret.ccloud-tls-certs,
     kubernetes_secret.credential,

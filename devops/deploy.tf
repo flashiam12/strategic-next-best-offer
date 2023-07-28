@@ -46,17 +46,17 @@ resource "kubectl_manifest" "customer-activity" {
   ]
 }
 
-data "kubectl_file_documents" "customer-propensity" {
-    content = file("${path.module}/workloads/customer-propensity-service-cron.yaml")
-}
+# data "kubectl_file_documents" "customer-propensity" {
+#     content = file("${path.module}/workloads/customer-propensity-service-cron.yaml")
+# }
 
-resource "kubectl_manifest" "customer-propensity" {
-  for_each  = data.kubectl_file_documents.customer-propensity.manifests
-  yaml_body = each.value
-  depends_on = [
-    null_resource.build
-  ]
-}
+# resource "kubectl_manifest" "customer-propensity" {
+#   for_each  = data.kubectl_file_documents.customer-propensity.manifests
+#   yaml_body = each.value
+#   depends_on = [
+#     null_resource.build
+#   ]
+# }
 
 data "kubectl_file_documents" "activity-offer" {
     content = file("${path.module}/workloads/activity-offer-service-cron.yaml")
@@ -64,6 +64,18 @@ data "kubectl_file_documents" "activity-offer" {
 
 resource "kubectl_manifest" "activity-offer" {
   for_each  = data.kubectl_file_documents.activity-offer.manifests
+  yaml_body = each.value
+  depends_on = [
+    null_resource.build
+  ]
+}
+
+data "kubectl_file_documents" "propensity-score" {
+    content = file("${path.module}/workloads/customer-activity-propensity-service.yaml")
+}
+
+resource "kubectl_manifest" "propensity-score" {
+  for_each  = data.kubectl_file_documents.propensity-score.manifests
   yaml_body = each.value
   depends_on = [
     null_resource.build

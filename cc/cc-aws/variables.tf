@@ -40,7 +40,12 @@ variable "aws_cc_topics" {
     "aws-customer-propensity-score",
     "hsbc_ops_aws_clone.public.customer_activity",
     "hsbc_ops_aws_clone.public.customer_registration",
-    "aws-enriched-customer-behaviour"
+    "aws-enriched-customer-behaviour-clone-0", 
+    "aws-next-best-offers-per-customer-current-activity-event-result",
+    "aws-next-best-offers-per-customer-current-activity-event",
+    "aws-next-best-offers-per-customer-next-activity-event",
+    "aws-next-best-offers-per-customer-current-activity-event-clone-0",
+    "aws-next-best-offers-per-customer-next-activity-event-clone-0"
   ]
 }
 

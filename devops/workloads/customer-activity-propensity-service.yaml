@@ -24,11 +24,11 @@ spec:
         - customer-activity-propensity-service.py
         env:
         - name: KAFKA_TOPIC
-          value: aws-enriched-customer-behaviour
+          value: aws-enriched-customer-behaviour-clone-0
         - name: SR_URL
           value: https://psrc-e0919.us-east-2.aws.confluent.cloud
         - name: VALUE_SR_ID
-          value: '100050'
+          value: '100104'
         - name: KEY_SR_ID
           value: '100030'
         - name: KINESIS_STREAM_NAME

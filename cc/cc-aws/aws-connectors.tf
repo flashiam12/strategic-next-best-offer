@@ -65,7 +65,7 @@ resource "confluent_connector" "S3Sink" {
     "time.interval" : "HOURLY",
     "flush.size": "1000",
     "tasks.max" : "1",
-    "topics": "aws-next-best-offers-per-customer-activity-event",
+    "topics": "aws-next-best-offers-per-customer-current-activity-event-result",
     # "store.kafka.keys": true,
     "schema.compatibility": "FULL"
   }

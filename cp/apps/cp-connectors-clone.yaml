@@ -42,3 +42,71 @@ spec:
     value.converter.basic.auth.credentials.source: "USER_INFO"
     key.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
     value.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+
+---
+
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: ops-db-sink-aws-clone-0
+  namespace: confluent
+spec:
+  class: "io.confluent.connect.jdbc.JdbcSinkConnector"
+  taskMax: 4
+  connectClusterRef:
+    name: connect-clone
+  configs:
+    name: ops-db-sink-aws-clone-0
+    connector.class: io.confluent.connect.jdbc.JdbcSinkConnector
+    connection.url: jdbc:postgresql://hsbc-ops-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com:5432/hsbcOpsDB
+    connection.user: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_user}
+    connection.password: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_pass}
+    insert.mode: upsert
+    pk.mode: record_key
+    pk.fields: customer_id
+    auto.create: "true"
+    auto.evolve: "true"
+    delete.enabled: "true"
+    topics: "aws-next-best-offers-per-customer-current-activity-event-clone-0"
+    value.converter: io.confluent.connect.json.JsonSchemaConverter
+    key.converter: io.confluent.connect.json.JsonSchemaConverter
+    key.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    value.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    key.converter.use.latest.version: "true"
+    value.converter.use.latest.version: "true"
+    key.converter.basic.auth.credentials.source: "USER_INFO"
+    value.converter.basic.auth.credentials.source: "USER_INFO"
+    key.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+    value.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+
+    # plugin.name: pgoutput
+    # topic.prefix: hsbc_ops_aws_clone
+    # kafka.auth.mode: KAFKA_API_KEY
+    # kafka.api.key: ${file:/mnt/secrets/connector-secrets/connect.txt:username}
+    # kafka.api.secret : ${file:/mnt/secrets/connector-secrets/connect.txt:password}
+    # tasks.max: "4"
+    # database.hostname: hsbc-ops-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com
+    # database.port: "5432"
+    # database.user: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_user}
+    # database.password: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_pass}
+    # database.dbname: hsbcOpsDB
+    # database.server.name: hsbc-ops-db
+    # output.data.format: JSON
+    # after.state.only: "false"
+    # slot.name: "debezium_aws_clone"
+    # decimal.handling.mode: double
+    # snapshot.mode: initial
+    # transforms: ExtractField
+    # transforms.ExtractField.field: after
+    # transforms.ExtractField.type: org.apache.kafka.connect.transforms.ExtractField$Value
+    # value.converter: io.confluent.connect.json.JsonSchemaConverter
+    # key.converter: io.confluent.connect.json.JsonSchemaConverter
+    # # schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    # key.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    # value.converter.schema.registry.url: https://psrc-e0919.us-east-2.aws.confluent.cloud
+    # key.converter.use.latest.version: "true"
+    # value.converter.use.latest.version: "true"
+    # key.converter.basic.auth.credentials.source: "USER_INFO"
+    # value.converter.basic.auth.credentials.source: "USER_INFO"
+    # key.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+    # value.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}

@@ -296,7 +296,7 @@ resource "kubectl_manifest" "cp-connect-clone-ingress" {
 
 data "kubectl_file_documents" "cp-ksql-ingress" {
     content = templatefile("${path.module}/apps/ingress/cp-ksql-ingress.yaml", {
-      aws_acm_cert_arn = "${module.ksql-acm.arn}", 
+      aws_acm_cert_arn = "${aws_acm_certificate.default.arn}", 
       cp_ksql_fqdn = "${local.cp_ksql_fqdn}",
       aws_eks_vpc_public_subnet = "${local.eks_vpc_public_subnet}"
       }

@@ -5,8 +5,8 @@ metadata:
   namespace: confluent
 spec:
   replicas: 1
-  authentication:
-    type: mtls   
+  # authentication:
+  #   type: mtls   
   dependencies:
     kafka:
       bootstrapEndpoint: kafka-0.kafka.confluent.svc.cluster.local:9092

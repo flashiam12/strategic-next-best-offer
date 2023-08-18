@@ -4,7 +4,7 @@ metadata:
   name: ksqldb
   namespace: confluent
 spec:
-  replicas: 1
+  replicas: 3
   # authentication:
   #   type: mtls   
   dependencies:
@@ -18,8 +18,14 @@ spec:
       url: https://schemaregistry.confluent.svc.cluster.local:8081
       tls:
         enabled: true
-      authentication:
-        type: mtls
+      # authentication:
+      #   type: basic
+      #   basic:
+      #     secretRef: credential-sr
+    kafkaRestProxy:
+      url: https://kafkarestproxy.confluent.svc.cluster.local:8082
+      tls:
+        enabled: true
   image:
     application: confluentinc/cp-ksqldb-server:7.3.0
     init: confluentinc/confluent-init-container:2.4.0

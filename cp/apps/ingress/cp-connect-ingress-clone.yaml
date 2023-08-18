@@ -24,6 +24,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: connect-clone-bootstrap-np
+            name: connect-clone-01-bootstrap-np
             port:
               number: 8083

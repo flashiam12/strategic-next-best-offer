@@ -72,6 +72,22 @@ resource "kubernetes_secret" "credential" {
   type = "kubernetes.io/generic"
 }
 
+resource "kubernetes_secret" "sr-credential" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "credential-sr"
+    namespace = "confluent"
+  }
+
+  data = {
+    "plain-users.json" = "${file("./secrets/creds-kafka-sasl-users.json")}"
+    "plain.txt" = "${file("./secrets/creds-client-kafka-sasl-user.txt")}"
+    "basic.txt" = "${file("./secrets/creds-basic-sr-user.txt")}"
+  }
+
+  type = "kubernetes.io/generic"
+}
+
 resource "kubernetes_secret" "rest-credential" {
   provider = kubernetes.kubernetes-raw
   metadata {
@@ -209,6 +225,20 @@ module "ksql-acm" {
     local_file.ksql_tls_crt,
     local_file.ksql_tls_key
    ]
+}
+
+resource "kubernetes_secret" "cp-license" {
+  provider = kubernetes.kubernetes-raw
+  metadata {
+    name = "cp-license"
+    namespace = "confluent"
+  }
+
+  data = {
+    "license.txt" = "${file("./secrets/license.txt")}"
+  }
+
+  type = "kubernetes.io/generic"
 }
 
 # resource "kubernetes-secrets" "ksql-tls-certs" {

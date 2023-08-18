@@ -12,7 +12,18 @@ spec:
 # apiVersion: platform.confluent.io/v1beta1
 # kind: KafkaTopic
 # metadata:
-#   name: hsbc_ops_cp.public.customer_activity
+#   name: cp-enriched-customer-behaviour-clone-0
+#   namespace: confluent
+# spec:
+#   replicas: 3
+#   partitionCount: 6
+#   kafkaRestClassRef:hsbc_ops_cp.public.aws-next-best-offers-per-customer-current-activity-event-clone
+#     name: krc-cfk
+# ---
+# apiVersion: platform.confluent.io/v1beta1
+# kind: KafkaTopic
+# metadata:
+#   name: "hsbc_ops_cp.public.customer_activity"
 #   namespace: confluent
 # spec:
 #   replicas: 3
@@ -23,7 +34,7 @@ spec:
 # apiVersion: platform.confluent.io/v1beta1
 # kind: KafkaTopic
 # metadata:
-#   name: hsbc_ops_cp.public.customer_registration
+#   name: "hsbc_ops_cp.public.customer_registration"
 #   namespace: confluent
 # spec:
 #   replicas: 3

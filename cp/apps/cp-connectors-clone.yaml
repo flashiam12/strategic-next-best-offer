@@ -1,15 +1,15 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: Connector
 metadata:
-  name: ops-db-cdc-aws-clone
+  name: ops-db-cdc-aws-clone-01
   namespace: confluent
 spec:
   class: "io.debezium.connector.postgresql.PostgresConnector"
   taskMax: 4
   connectClusterRef:
-    name: connect-clone
+    name: connect-clone-01
   configs:
-    name: ops-db-cdc-aws-clone
+    name: ops-db-cdc-aws-clone-01
     connector.class: io.debezium.connector.postgresql.PostgresConnector
     plugin.name: pgoutput
     topic.prefix: hsbc_ops_aws_clone
@@ -42,21 +42,22 @@ spec:
     value.converter.basic.auth.credentials.source: "USER_INFO"
     key.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
     value.converter.basic.auth.user.info: ${file:/mnt/secrets/connector-secrets/connect.txt:aws_sr_auth}
+    table.include.list: "public.customer_activity, public.customer_registration"
 
 ---
 
 apiVersion: platform.confluent.io/v1beta1
 kind: Connector
 metadata:
-  name: ops-db-sink-aws-clone-0
+  name: ops-db-sink-aws-clone-01
   namespace: confluent
 spec:
   class: "io.confluent.connect.jdbc.JdbcSinkConnector"
   taskMax: 4
   connectClusterRef:
-    name: connect-clone
+    name: connect-clone-01
   configs:
-    name: ops-db-sink-aws-clone-0
+    name: ops-db-sink-aws-clone-01
     connector.class: io.confluent.connect.jdbc.JdbcSinkConnector
     connection.url: jdbc:postgresql://hsbc-ops-db.cndsjke6xo5r.us-west-2.rds.amazonaws.com:5432/hsbcOpsDB
     connection.user: ${file:/mnt/secrets/connector-secrets/connect.txt:pgsql_user}

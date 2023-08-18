@@ -19,7 +19,7 @@ spec:
       jaasConfigPassThrough:
         secretRef: jaasconfig-ccloud
   mirrorTopics:
-  - name: aws-next-best-offers-per-customer-activity-event
+  - name: aws-next-best-offers-per-customer-current-activity-event-clone-0
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ClusterLink
@@ -44,5 +44,3 @@ spec:
       namespace: confluent
   mirrorTopics:
     - name: cp-enriched-customer-behaviour
-    - name: hsbc_ops_cp.public.customer_activity
-    - name: hsbc_ops_cp.public.customer_registration

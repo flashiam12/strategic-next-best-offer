@@ -24,6 +24,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: connect-bootstrap-np
+            name: connect-cp-bootstrap-np
             port:
               number: 8083

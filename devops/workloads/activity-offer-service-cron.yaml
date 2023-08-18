@@ -4,11 +4,11 @@ metadata:
   name: activity-offer-service-cron
   namespace: internal
 spec:
-  schedule: "* * * * *"
-  concurrencyPolicy: Allow
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
-  suspend: true
+  suspend: false
   jobTemplate:
     spec:
       template:

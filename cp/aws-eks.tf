@@ -253,6 +253,10 @@ resource "helm_release" "confluent-operator" {
   depends_on = [
     kubectl_manifest.cfk-crds
   ]
+  set {
+    name = "license.secretRef"
+    value = "cp-license"
+  }
 }
 
 data "kubectl_file_documents" "cfk-permissions" {

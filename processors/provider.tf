@@ -7,7 +7,8 @@ terraform {
   }
 }
 
-provider "gcp-ksql" {
+provider "restapi" {
+  uri = ""
   # Configuration options
 }
 

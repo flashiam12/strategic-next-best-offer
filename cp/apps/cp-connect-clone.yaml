@@ -1,7 +1,7 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
-  name: connect-clone
+  name: connect-clone-01
   namespace: confluent
 spec:
   replicas: 1
